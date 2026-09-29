@@ -34,11 +34,12 @@ class _ParentAttendanceScreenState extends ConsumerState<ParentAttendanceScreen>
     final summaryAsync = ref.watch(attendanceProvider(params));
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
       appBar: AppBar(title: const Text('Attendance')),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
             child: SegmentedButton<String>(
               segments: const [
                 ButtonSegment(value: 'day', label: Text('Day')),
@@ -74,28 +75,78 @@ class _AttendanceView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (summary.data.isEmpty) {
-      return const Center(child: Text('No attendance records for this period.'));
+      return const _EmptyState();
     }
 
     final counts = summary.countsByStatus;
+    final present = counts[AttendanceStatus.present] ?? 0;
+    final pct = summary.total == 0 ? 0 : ((present / summary.total) * 100).round();
     final dateFormat = DateFormat('d MMM yyyy');
 
-    return Column(
+    return ListView(
+      padding: const EdgeInsets.all(16),
       children: [
+        _PercentHeader(percent: pct, total: summary.total),
+        const SizedBox(height: 12),
         _StatusCountsRow(counts: counts),
-        const Divider(height: 1),
-        Expanded(
-          child: ListView.separated(
-            padding: const EdgeInsets.all(12),
-            itemCount: summary.data.length,
-            separatorBuilder: (_, _) => const SizedBox(height: 8),
-            itemBuilder: (context, index) {
-              final record = summary.data[index];
-              return _AttendanceRow(record: record, dateFormat: dateFormat);
-            },
-          ),
-        ),
+        const SizedBox(height: 20),
+        Text('Daily record', style: Theme.of(context).textTheme.titleSmall),
+        const SizedBox(height: 8),
+        ...summary.data.map((r) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: _AttendanceRow(record: r, dateFormat: dateFormat),
+            )),
       ],
+    );
+  }
+}
+
+class _PercentHeader extends StatelessWidget {
+  const _PercentHeader({required this.percent, required this.total});
+
+  final int percent;
+  final int total;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: scheme.primaryContainer,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 72,
+            height: 72,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                CircularProgressIndicator(
+                  value: percent / 100,
+                  strokeWidth: 6,
+                  backgroundColor: scheme.primary.withValues(alpha: 0.15),
+                  valueColor: AlwaysStoppedAnimation(scheme.primary),
+                ),
+                Text('$percent%', style: TextStyle(fontWeight: FontWeight.bold, color: scheme.onPrimaryContainer)),
+              ],
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Present rate', style: TextStyle(color: scheme.onPrimaryContainer, fontSize: 16, fontWeight: FontWeight.w600)),
+                const SizedBox(height: 4),
+                Text('$total day${total == 1 ? '' : 's'} recorded', style: TextStyle(color: scheme.onPrimaryContainer.withValues(alpha: 0.7))),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -110,19 +161,27 @@ class _StatusCountsRow extends StatelessWidget {
     final nonZero = AttendanceStatus.values.where((s) => (counts[s] ?? 0) > 0);
     if (nonZero.isEmpty) return const SizedBox.shrink();
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      child: Wrap(
-        spacing: 8,
-        runSpacing: 8,
-        children: [
-          for (final status in nonZero)
-            Chip(
-              avatar: CircleAvatar(backgroundColor: status.color, radius: 6),
-              label: Text('${status.label}: ${counts[status]}'),
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        for (final status in nonZero)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: status.color.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
             ),
-        ],
-      ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(width: 8, height: 8, decoration: BoxDecoration(color: status.color, shape: BoxShape.circle)),
+                const SizedBox(width: 6),
+                Text('${status.label} ${counts[status]}', style: TextStyle(color: status.color, fontWeight: FontWeight.w600, fontSize: 12)),
+              ],
+            ),
+          ),
+      ],
     );
   }
 }
@@ -137,16 +196,19 @@ class _AttendanceRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final checkIn = record.checkInTimeOfDay;
     return Card(
+      elevation: 0,
       margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+        side: BorderSide(color: record.status.color.withValues(alpha: 0.25)),
+      ),
       child: ListTile(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         leading: CircleAvatar(
-          backgroundColor: record.status.color,
-          child: Text(
-            record.status.label.substring(0, 1),
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
+          backgroundColor: record.status.color.withValues(alpha: 0.15),
+          child: Icon(Icons.circle, color: record.status.color, size: 12),
         ),
-        title: Text(dateFormat.format(record.attendanceDate)),
+        title: Text(dateFormat.format(record.attendanceDate), style: const TextStyle(fontWeight: FontWeight.w600)),
         subtitle: Text(
           [
             record.status.label,
@@ -154,6 +216,24 @@ class _AttendanceRow extends StatelessWidget {
             if (record.remarks != null && record.remarks!.isNotEmpty) record.remarks!,
           ].join(' • '),
         ),
+      ),
+    );
+  }
+}
+
+class _EmptyState extends StatelessWidget {
+  const _EmptyState();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.event_busy_outlined, size: 48, color: Theme.of(context).colorScheme.outline),
+          const SizedBox(height: 12),
+          const Text('No attendance records for this period.'),
+        ],
       ),
     );
   }
