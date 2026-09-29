@@ -8,13 +8,15 @@ import 'screens/parent_academics_hub_screen.dart';
 import 'screens/parent_attendance_screen.dart';
 import 'screens/parent_home_screen.dart';
 import 'screens/parent_homework_screen.dart';
+import 'screens/parent_teachers_screen.dart';
 import 'screens/parent_timetable_screen.dart';
+import 'screens/teacher_profile_screen.dart';
 
 /// P1 scope: Home is real (child switcher + selection). Fees/More are
 /// ComingSoonScreen for now — same convention the web app uses for an
-/// unbuilt route (see ComingSoonPage.jsx). Academics is now a real hub
-/// (Attendance + Homework + Timetable built; Teachers listed but disabled
-/// until its own slice lands) — see role-wise plan for the build order.
+/// unbuilt route (see ComingSoonPage.jsx). Academics is now a real hub —
+/// Attendance, Homework, Timetable, and Teachers are all built; only
+/// Events/Calendar/Activities remain to finish off P1.
 class ParentModule implements RoleModule {
   @override
   AppRole get role => AppRole.parent;
@@ -43,6 +45,17 @@ class ParentModule implements RoleModule {
             GoRoute(
               path: 'timetable',
               builder: (context, state) => const ParentTimetableScreen(),
+            ),
+            GoRoute(
+              path: 'teachers',
+              builder: (context, state) => const ParentTeachersScreen(),
+              routes: [
+                GoRoute(
+                  path: ':staffId',
+                  builder: (context, state) =>
+                      TeacherProfileScreen(staffId: state.pathParameters['staffId']!),
+                ),
+              ],
             ),
           ],
         ),

@@ -47,6 +47,7 @@ class _ParentHomeworkScreenState extends ConsumerState<ParentHomeworkScreen>
     final assignmentsAsync = ref.watch(assignmentsProvider(studentId));
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
       appBar: AppBar(
         title: const Text('Homework'),
         bottom: TabBar(
@@ -82,13 +83,22 @@ class _HomeworkList extends StatelessWidget {
     return asyncValue.when(
       data: (items) {
         if (items.isEmpty) {
-          return const Center(child: Text('Nothing here yet.'));
+          return Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.task_alt_outlined, size: 48, color: Theme.of(context).colorScheme.outline),
+                const SizedBox(height: 12),
+                const Text('Nothing here yet.'),
+              ],
+            ),
+          );
         }
         final dateFormat = DateFormat('d MMM yyyy');
         return ListView.separated(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(16),
           itemCount: items.length,
-          separatorBuilder: (_, _) => const SizedBox(height: 8),
+          separatorBuilder: (_, _) => const SizedBox(height: 10),
           itemBuilder: (context, index) => _HomeworkCard(item: items[index], dateFormat: dateFormat),
         );
       },
@@ -107,49 +117,74 @@ class _HomeworkCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final status = item.effectiveStatus;
-    return Card(
-      margin: EdgeInsets.zero,
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    item.homework.title,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border(left: BorderSide(color: status.color, width: 4)),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 6, offset: const Offset(0, 2)),
+        ],
+      ),
+      padding: const EdgeInsets.all(14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  item.homework.title,
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
-                Chip(
-                  avatar: CircleAvatar(backgroundColor: status.color, radius: 6),
-                  label: Text(status.label),
-                  visualDensity: VisualDensity.compact,
-                ),
-              ],
-            ),
-            const SizedBox(height: 4),
-            Text(item.homework.subject.subjectName, style: Theme.of(context).textTheme.bodySmall),
-            if (item.homework.description != null && item.homework.description!.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Text(item.homework.description!),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(color: status.color.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(10)),
+                child: Text(status.label, style: TextStyle(color: status.color, fontSize: 11, fontWeight: FontWeight.w700)),
+              ),
             ],
+          ),
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              Icon(Icons.menu_book_outlined, size: 14, color: Theme.of(context).colorScheme.outline),
+              const SizedBox(width: 4),
+              Text(item.homework.subject.subjectName, style: Theme.of(context).textTheme.bodySmall),
+            ],
+          ),
+          if (item.homework.description != null && item.homework.description!.isNotEmpty) ...[
             const SizedBox(height: 8),
-            Text('Due: ${dateFormat.format(item.homework.dueDate)}'),
-            // The API only ever returns the teacher's login username, not
-            // their display name (verified live) — shown as-is since
-            // there's nothing better to show.
-            Text(
-              'Assigned by: ${item.homework.assignedBy.username}',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            if (item.remark != null && item.remark!.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Text('Teacher remark: ${item.remark}', style: const TextStyle(fontStyle: FontStyle.italic)),
-            ],
+            Text(item.homework.description!),
           ],
-        ),
+          const Divider(height: 20),
+          Row(
+            children: [
+              Icon(Icons.event_outlined, size: 14, color: Theme.of(context).colorScheme.outline),
+              const SizedBox(width: 4),
+              Text('Due ${dateFormat.format(item.homework.dueDate)}', style: Theme.of(context).textTheme.bodySmall),
+              const Spacer(),
+              // The API only ever returns the teacher's login username, not
+              // their display name (verified live) — shown as-is since
+              // there's nothing better to show.
+              Icon(Icons.person_outline, size: 14, color: Theme.of(context).colorScheme.outline),
+              const SizedBox(width: 4),
+              Text(item.homework.assignedBy.username, style: Theme.of(context).textTheme.bodySmall),
+            ],
+          ),
+          if (item.remark != null && item.remark!.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text('Teacher remark: ${item.remark}', style: const TextStyle(fontStyle: FontStyle.italic)),
+            ),
+          ],
+        ],
       ),
     );
   }

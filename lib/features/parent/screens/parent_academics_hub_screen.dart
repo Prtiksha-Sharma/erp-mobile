@@ -32,10 +32,11 @@ class ParentAcademicsHubScreen extends StatelessWidget {
             trailing: const Icon(Icons.chevron_right),
             onTap: () => context.go('/parent/academics/timetable'),
           ),
-          const ListTile(
-            leading: Icon(Icons.people_outline, color: Colors.grey),
-            title: Text('Teachers', style: TextStyle(color: Colors.grey)),
-            trailing: Text('Coming soon', style: TextStyle(color: Colors.grey)),
+          ListTile(
+            leading: const Icon(Icons.people_outline),
+            title: const Text('Teachers'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.go('/parent/academics/teachers'),
           ),
         ],
       ),
