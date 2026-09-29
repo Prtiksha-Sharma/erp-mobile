@@ -4,8 +4,23 @@ import 'package:flutter/foundation.dart';
 import '../storage/secure_storage.dart';
 
 /// Comes from --dart-define-from-file=config/dev.json (or config/prod.json)
-/// — see README.md. Never hardcode this.
-const _apiBaseUrl = String.fromEnvironment('API_BASE_URL');
+/// — see README.md.
+///
+/// The defaultValue matters: without one, String.fromEnvironment silently
+/// resolves to an EMPTY STRING (not an error) whenever the flag is
+/// forgotten — plain `flutter run` with no --dart-define-from-file would
+/// then try to call "" + "/auth/login" and fail before the request ever
+/// leaves the device, with no clear signal why. Confirmed live: this was
+/// the exact cause of two separate "login just doesn't work" reports.
+/// The default matches config/dev.json's own value, so plain `flutter run`
+/// now behaves identically to the flagged command for local dev — while
+/// `--dart-define-from-file=config/prod.json` still correctly overrides
+/// this for a real build, since the default only applies when nothing was
+/// explicitly provided.
+const _apiBaseUrl = String.fromEnvironment(
+  'API_BASE_URL',
+  defaultValue: 'http://localhost:5000/api',
+);
 
 /// Mirrors apps/school/src/lib/axios.js on the web frontend: injects the
 /// bearer token + X-School-ID on every request.
