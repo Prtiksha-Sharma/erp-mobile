@@ -44,3 +44,9 @@ extension FailureMessage on Failure {
         unknown: (message) => 'Something unexpected happened.',
       );
 }
+
+/// Safe fallback for the (rare) case an AsyncValue's error isn't our own
+/// Failure type — e.g. a genuinely unexpected framework-level exception
+/// rather than anything guard() produced. Every screen's error state uses
+/// this instead of re-writing the `is Failure` check each time.
+String describeError(Object error) => error is Failure ? error.userMessage : 'Something went wrong.';

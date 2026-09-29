@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/roles/app_role.dart';
 import '../../core/roles/role_module.dart';
 import '../../ui/widgets/coming_soon_screen.dart';
+import 'screens/parent_attendance_screen.dart';
 import 'screens/parent_home_screen.dart';
 
 /// P1 scope: Home is real (child switcher + selection). Academics/Fees/More
@@ -23,9 +24,12 @@ class ParentModule implements RoleModule {
           path: '/parent/home',
           builder: (context, state) => const ParentHomeScreen(),
         ),
+        // Academics becomes a real tabbed hub once Homework/Timetable/
+        // Teachers land too — for now it routes straight to Attendance,
+        // the only one of the four built so far.
         GoRoute(
           path: '/parent/academics',
-          builder: (context, state) => const ComingSoonScreen(title: 'Academics'),
+          builder: (context, state) => const ParentAttendanceScreen(),
         ),
         GoRoute(
           path: '/parent/fees',

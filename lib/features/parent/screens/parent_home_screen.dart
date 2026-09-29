@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/auth/auth_provider.dart';
 import '../../../core/error/failure.dart';
 import '../../../core/models/child.dart';
+import '../../../ui/widgets/error_view.dart';
 import '../providers/children_provider.dart';
 
 class ParentHomeScreen extends ConsumerWidget {
@@ -39,8 +40,8 @@ class ParentHomeScreen extends ConsumerWidget {
       body: childrenAsync.when(
         data: (children) => _ChildrenView(children: children, activeChild: activeChild),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, _) => _ErrorView(
-          message: err is Failure ? err.userMessage : 'Something went wrong.',
+        error: (err, _) => ErrorView(
+          message: describeError(err),
           onRetry: () => ref.invalidate(childrenListProvider),
         ),
       ),
@@ -104,30 +105,6 @@ class _ChildSwitcher extends ConsumerWidget {
             onSelected: (_) => ref.read(activeChildProvider.notifier).select(child),
           );
         },
-      ),
-    );
-  }
-}
-
-class _ErrorView extends StatelessWidget {
-  const _ErrorView({required this.message, required this.onRetry});
-
-  final String message;
-  final VoidCallback onRetry;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(message, textAlign: TextAlign.center),
-            const SizedBox(height: 16),
-            FilledButton(onPressed: onRetry, child: const Text('Retry')),
-          ],
-        ),
       ),
     );
   }

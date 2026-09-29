@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import '../storage/secure_storage.dart';
 
@@ -64,6 +65,24 @@ class DioClient {
         },
       ),
     );
+
+    // Debug-only, and deliberately NOT logging request bodies or headers —
+    // a login request body has a plaintext password, and every other
+    // request carries the bearer token in its headers (see Pillar 2 of the
+    // enterprise plan: never log tokens, in debug or release). Method/path/
+    // status/response body is enough to diagnose "why did this call fail"
+    // without capturing anything sensitive. Never runs in a release build.
+    if (kDebugMode) {
+      dio.interceptors.add(
+        LogInterceptor(
+          requestBody: false,
+          requestHeader: false,
+          responseHeader: false,
+          responseBody: true,
+          error: true,
+        ),
+      );
+    }
 
     return dio;
   }

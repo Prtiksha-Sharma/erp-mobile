@@ -13,22 +13,31 @@ enum AppRole {
   teacher,
   driver;
 
-  /// Matches the role_name strings issued by the backend JWT — see
-  /// edusoft_backend/src/routes/index.js and the ROLES constants on the
-  /// web frontend (apps/school/src/shared/constants/roles.js).
+  /// Matches the RAW role_name strings the backend JWT actually carries —
+  /// Title Case, verified directly against auth.service.js#getUserRoles
+  /// (a plain, untransformed `roles.role_name` column read) and every
+  /// `authorize('Parent')` / `role_name: { in: ['Teacher', 'Class Teacher'] }`
+  /// call site in the backend. This is NOT the same as the web frontend's
+  /// own normalized lowercase-snake_case ROLES constant
+  /// (apps/school/src/shared/constants/roles.js) — that's a frontend-only
+  /// value produced by authMappers.js#normalizeRoleName, not what's on the
+  /// wire. Learned the hard way: an earlier version of this method matched
+  /// against the frontend's normalized strings and every login failed with
+  /// "this account's role isn't supported on mobile yet" even for a
+  /// perfectly valid Parent account.
   static AppRole? fromBackendName(String? name) {
     switch (name) {
-      case 'parent':
+      case 'Parent':
         return AppRole.parent;
-      case 'student':
+      case 'Student':
         return AppRole.student;
-      case 'teacher':
-      case 'class_teacher':
+      case 'Teacher':
+      case 'Class Teacher':
         return AppRole.teacher;
-      case 'driver':
+      case 'Driver':
         return AppRole.driver;
       default:
-        // Not an error — e.g. school_admin, principal, accountant are real
+        // Not an error — e.g. School Admin, Principal, Accountant are real
         // backend roles with no mobile module yet. See RoleModule doc.
         return null;
     }
