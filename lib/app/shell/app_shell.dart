@@ -26,8 +26,12 @@ class AppShell extends ConsumerWidget {
       return Scaffold(body: child);
     }
 
+    // startsWith, not ==: a tab's route can have sub-pages (e.g.
+    // /parent/academics/attendance under the Academics tab's
+    // /parent/academics) — those must still highlight their parent tab,
+    // not silently fall back to index 0.
     final currentPath = GoRouterState.of(context).matchedLocation;
-    var currentIndex = tabs.indexWhere((t) => t.path == currentPath);
+    var currentIndex = tabs.indexWhere((t) => currentPath.startsWith(t.path));
     if (currentIndex < 0) currentIndex = 0;
 
     return Scaffold(

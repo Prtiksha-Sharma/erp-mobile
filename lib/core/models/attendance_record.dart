@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../utils/datetime_extensions.dart';
+
 part 'attendance_record.freezed.dart';
 part 'attendance_record.g.dart';
 
@@ -69,9 +71,5 @@ abstract class AttendanceRecord with _$AttendanceRecord {
 }
 
 extension AttendanceRecordDisplay on AttendanceRecord {
-  TimeOfDay? get checkInTimeOfDay {
-    final t = checkInTime;
-    if (t == null) return null;
-    return TimeOfDay(hour: t.hour, minute: t.minute);
-  }
+  TimeOfDay? get checkInTimeOfDay => checkInTime?.timeOfDayOnly;
 }
