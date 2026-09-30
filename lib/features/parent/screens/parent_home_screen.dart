@@ -34,7 +34,7 @@ class ParentHomeScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('EduSoft Parent'),
+        title: const Text('Vidyaprabandhan Parent'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
