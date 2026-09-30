@@ -7,17 +7,26 @@ part 'academic_refs.g.dart';
 /// `{ institution_name }` relation shapes that Prisma nests under many
 /// student endpoints (profile, promotion history, enrollments). Shared here
 /// the same way subject_ref.dart is, instead of redeclaring them per model.
+/// The teacher endpoints select `{ class_id, class_name }` /
+/// `{ section_id, section_name }` (teacher/subjects.service.js and friends),
+/// so the ids are optional here — null wherever an endpoint omits them.
 
 @freezed
 abstract class ClassRef with _$ClassRef {
-  const factory ClassRef({@JsonKey(name: 'class_name') String? className}) = _ClassRef;
+  const factory ClassRef({
+    @JsonKey(name: 'class_id') String? classId,
+    @JsonKey(name: 'class_name') String? className,
+  }) = _ClassRef;
 
   factory ClassRef.fromJson(Map<String, dynamic> json) => _$ClassRefFromJson(json);
 }
 
 @freezed
 abstract class SectionRef with _$SectionRef {
-  const factory SectionRef({@JsonKey(name: 'section_name') String? sectionName}) = _SectionRef;
+  const factory SectionRef({
+    @JsonKey(name: 'section_id') String? sectionId,
+    @JsonKey(name: 'section_name') String? sectionName,
+  }) = _SectionRef;
 
   factory SectionRef.fromJson(Map<String, dynamic> json) => _$SectionRefFromJson(json);
 }

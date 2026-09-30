@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ClassRef {
 
-@JsonKey(name: 'class_name') String? get className;
+@JsonKey(name: 'class_id') String? get classId;@JsonKey(name: 'class_name') String? get className;
 /// Create a copy of ClassRef
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,20 +30,20 @@ $ClassRefCopyWith<ClassRef> get copyWith => _$ClassRefCopyWithImpl<ClassRef>(thi
 @override
 bool operator ==(Object other) {
   final _this = this as ClassRef;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClassRef&&(identical(other.className, _this.className) || other.className == _this.className));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClassRef&&(identical(other.classId, _this.classId) || other.classId == _this.classId)&&(identical(other.className, _this.className) || other.className == _this.className));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as ClassRef;
-  return Object.hash(runtimeType,_this.className);
+  return Object.hash(runtimeType,_this.classId,_this.className);
 }
 
 @override
 String toString() {
   final _this = this as ClassRef;
-  return 'ClassRef(className: ${_this.className})';
+  return 'ClassRef(classId: ${_this.classId}, className: ${_this.className})';
 }
 
 
@@ -54,7 +54,7 @@ abstract mixin class $ClassRefCopyWith<$Res>  {
   factory $ClassRefCopyWith(ClassRef value, $Res Function(ClassRef) _then) = _$ClassRefCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'class_name') String? className
+@JsonKey(name: 'class_id') String? classId,@JsonKey(name: 'class_name') String? className
 });
 
 
@@ -71,9 +71,10 @@ class _$ClassRefCopyWithImpl<$Res>
 
 /// Create a copy of ClassRef
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? className = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? classId = freezed,Object? className = freezed,}) {
   return _then(ClassRef(
-className: freezed == className ? _self.className : className // ignore: cast_nullable_to_non_nullable
+classId: freezed == classId ? _self.classId : classId // ignore: cast_nullable_to_non_nullable
+as String?,className: freezed == className ? _self.className : className // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -159,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'class_name')  String? className)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'class_id')  String? classId, @JsonKey(name: 'class_name')  String? className)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ClassRef() when $default != null:
-return $default(_that.className);case _:
+return $default(_that.classId,_that.className);case _:
   return orElse();
 
 }
@@ -180,10 +181,10 @@ return $default(_that.className);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'class_name')  String? className)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'class_id')  String? classId, @JsonKey(name: 'class_name')  String? className)  $default,) {final _that = this;
 switch (_that) {
 case _ClassRef():
-return $default(_that.className);case _:
+return $default(_that.classId,_that.className);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,10 +201,10 @@ return $default(_that.className);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'class_name')  String? className)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'class_id')  String? classId, @JsonKey(name: 'class_name')  String? className)?  $default,) {final _that = this;
 switch (_that) {
 case _ClassRef() when $default != null:
-return $default(_that.className);case _:
+return $default(_that.classId,_that.className);case _:
   return null;
 
 }
@@ -215,9 +216,10 @@ return $default(_that.className);case _:
 @JsonSerializable()
 
 class _ClassRef implements ClassRef {
-  const _ClassRef({@JsonKey(name: 'class_name') this.className});
+  const _ClassRef({@JsonKey(name: 'class_id') this.classId, @JsonKey(name: 'class_name') this.className});
   factory _ClassRef.fromJson(Map<String, dynamic> json) => _$ClassRefFromJson(json);
 
+@override@JsonKey(name: 'class_id') final  String? classId;
 @override@JsonKey(name: 'class_name') final  String? className;
 
 /// Create a copy of ClassRef
@@ -233,18 +235,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ClassRef&&(identical(other.className, className) || other.className == className));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ClassRef&&(identical(other.classId, classId) || other.classId == classId)&&(identical(other.className, className) || other.className == className));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,className);
+    return Object.hash(runtimeType,classId,className);
 }
 
 @override
 String toString() {
-    return 'ClassRef(className: $className)';
+    return 'ClassRef(classId: $classId, className: $className)';
 }
 
 
@@ -255,7 +257,7 @@ abstract mixin class _$ClassRefCopyWith<$Res> implements $ClassRefCopyWith<$Res>
   factory _$ClassRefCopyWith(_ClassRef value, $Res Function(_ClassRef) _then) = __$ClassRefCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'class_name') String? className
+@JsonKey(name: 'class_id') String? classId,@JsonKey(name: 'class_name') String? className
 });
 
 
@@ -272,9 +274,10 @@ class __$ClassRefCopyWithImpl<$Res>
 
 /// Create a copy of ClassRef
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? className = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? classId = freezed,Object? className = freezed,}) {
   return _then(_ClassRef(
-className: freezed == className ? _self.className : className // ignore: cast_nullable_to_non_nullable
+classId: freezed == classId ? _self.classId : classId // ignore: cast_nullable_to_non_nullable
+as String?,className: freezed == className ? _self.className : className // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -286,7 +289,7 @@ as String?,
 /// @nodoc
 mixin _$SectionRef {
 
-@JsonKey(name: 'section_name') String? get sectionName;
+@JsonKey(name: 'section_id') String? get sectionId;@JsonKey(name: 'section_name') String? get sectionName;
 /// Create a copy of SectionRef
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -300,20 +303,20 @@ $SectionRefCopyWith<SectionRef> get copyWith => _$SectionRefCopyWithImpl<Section
 @override
 bool operator ==(Object other) {
   final _this = this as SectionRef;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SectionRef&&(identical(other.sectionName, _this.sectionName) || other.sectionName == _this.sectionName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SectionRef&&(identical(other.sectionId, _this.sectionId) || other.sectionId == _this.sectionId)&&(identical(other.sectionName, _this.sectionName) || other.sectionName == _this.sectionName));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as SectionRef;
-  return Object.hash(runtimeType,_this.sectionName);
+  return Object.hash(runtimeType,_this.sectionId,_this.sectionName);
 }
 
 @override
 String toString() {
   final _this = this as SectionRef;
-  return 'SectionRef(sectionName: ${_this.sectionName})';
+  return 'SectionRef(sectionId: ${_this.sectionId}, sectionName: ${_this.sectionName})';
 }
 
 
@@ -324,7 +327,7 @@ abstract mixin class $SectionRefCopyWith<$Res>  {
   factory $SectionRefCopyWith(SectionRef value, $Res Function(SectionRef) _then) = _$SectionRefCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'section_name') String? sectionName
+@JsonKey(name: 'section_id') String? sectionId,@JsonKey(name: 'section_name') String? sectionName
 });
 
 
@@ -341,9 +344,10 @@ class _$SectionRefCopyWithImpl<$Res>
 
 /// Create a copy of SectionRef
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? sectionName = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? sectionId = freezed,Object? sectionName = freezed,}) {
   return _then(SectionRef(
-sectionName: freezed == sectionName ? _self.sectionName : sectionName // ignore: cast_nullable_to_non_nullable
+sectionId: freezed == sectionId ? _self.sectionId : sectionId // ignore: cast_nullable_to_non_nullable
+as String?,sectionName: freezed == sectionName ? _self.sectionName : sectionName // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -429,10 +433,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'section_name')  String? sectionName)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'section_id')  String? sectionId, @JsonKey(name: 'section_name')  String? sectionName)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SectionRef() when $default != null:
-return $default(_that.sectionName);case _:
+return $default(_that.sectionId,_that.sectionName);case _:
   return orElse();
 
 }
@@ -450,10 +454,10 @@ return $default(_that.sectionName);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'section_name')  String? sectionName)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'section_id')  String? sectionId, @JsonKey(name: 'section_name')  String? sectionName)  $default,) {final _that = this;
 switch (_that) {
 case _SectionRef():
-return $default(_that.sectionName);case _:
+return $default(_that.sectionId,_that.sectionName);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -470,10 +474,10 @@ return $default(_that.sectionName);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'section_name')  String? sectionName)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'section_id')  String? sectionId, @JsonKey(name: 'section_name')  String? sectionName)?  $default,) {final _that = this;
 switch (_that) {
 case _SectionRef() when $default != null:
-return $default(_that.sectionName);case _:
+return $default(_that.sectionId,_that.sectionName);case _:
   return null;
 
 }
@@ -485,9 +489,10 @@ return $default(_that.sectionName);case _:
 @JsonSerializable()
 
 class _SectionRef implements SectionRef {
-  const _SectionRef({@JsonKey(name: 'section_name') this.sectionName});
+  const _SectionRef({@JsonKey(name: 'section_id') this.sectionId, @JsonKey(name: 'section_name') this.sectionName});
   factory _SectionRef.fromJson(Map<String, dynamic> json) => _$SectionRefFromJson(json);
 
+@override@JsonKey(name: 'section_id') final  String? sectionId;
 @override@JsonKey(name: 'section_name') final  String? sectionName;
 
 /// Create a copy of SectionRef
@@ -503,18 +508,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SectionRef&&(identical(other.sectionName, sectionName) || other.sectionName == sectionName));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SectionRef&&(identical(other.sectionId, sectionId) || other.sectionId == sectionId)&&(identical(other.sectionName, sectionName) || other.sectionName == sectionName));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,sectionName);
+    return Object.hash(runtimeType,sectionId,sectionName);
 }
 
 @override
 String toString() {
-    return 'SectionRef(sectionName: $sectionName)';
+    return 'SectionRef(sectionId: $sectionId, sectionName: $sectionName)';
 }
 
 
@@ -525,7 +530,7 @@ abstract mixin class _$SectionRefCopyWith<$Res> implements $SectionRefCopyWith<$
   factory _$SectionRefCopyWith(_SectionRef value, $Res Function(_SectionRef) _then) = __$SectionRefCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'section_name') String? sectionName
+@JsonKey(name: 'section_id') String? sectionId,@JsonKey(name: 'section_name') String? sectionName
 });
 
 
@@ -542,9 +547,10 @@ class __$SectionRefCopyWithImpl<$Res>
 
 /// Create a copy of SectionRef
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? sectionName = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? sectionId = freezed,Object? sectionName = freezed,}) {
   return _then(_SectionRef(
-sectionName: freezed == sectionName ? _self.sectionName : sectionName // ignore: cast_nullable_to_non_nullable
+sectionId: freezed == sectionId ? _self.sectionId : sectionId // ignore: cast_nullable_to_non_nullable
+as String?,sectionName: freezed == sectionName ? _self.sectionName : sectionName // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

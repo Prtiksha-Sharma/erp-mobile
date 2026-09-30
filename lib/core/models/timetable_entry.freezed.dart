@@ -286,7 +286,7 @@ as String,
 /// @nodoc
 mixin _$TimetableEntry {
 
-@JsonKey(name: 'timetable_entry_id') String get entryId;@JsonKey(name: 'day_of_week') int get dayOfWeek;@JsonKey(name: 'period_number') int get periodNumber;@JsonKey(name: 'start_time') DateTime get startTime;@JsonKey(name: 'end_time') DateTime get endTime; String? get room;@JsonKey(name: 'period_type', unknownEnumValue: PeriodType.unknown) PeriodType get periodType;@JsonKey(name: 'break_label') String? get breakLabel;@JsonKey(name: 'academic_subjects') SubjectRef? get subject;@JsonKey(name: 'staff_accounts') TeacherNameRef? get teacher;
+@JsonKey(name: 'timetable_entry_id') String get entryId;@JsonKey(name: 'day_of_week') int get dayOfWeek;@JsonKey(name: 'period_number') int get periodNumber;@JsonKey(name: 'start_time') DateTime get startTime;@JsonKey(name: 'end_time') DateTime get endTime; String? get room;@JsonKey(name: 'period_type', unknownEnumValue: PeriodType.unknown) PeriodType get periodType;@JsonKey(name: 'break_label') String? get breakLabel;@JsonKey(name: 'academic_subjects') SubjectRef? get subject;@JsonKey(name: 'staff_accounts') TeacherNameRef? get teacher;@JsonKey(name: 'classes') ClassRef? get classRef;@JsonKey(name: 'sections') SectionRef? get sectionRef;
 /// Create a copy of TimetableEntry
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -300,20 +300,20 @@ $TimetableEntryCopyWith<TimetableEntry> get copyWith => _$TimetableEntryCopyWith
 @override
 bool operator ==(Object other) {
   final _this = this as TimetableEntry;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TimetableEntry&&(identical(other.entryId, _this.entryId) || other.entryId == _this.entryId)&&(identical(other.dayOfWeek, _this.dayOfWeek) || other.dayOfWeek == _this.dayOfWeek)&&(identical(other.periodNumber, _this.periodNumber) || other.periodNumber == _this.periodNumber)&&(identical(other.startTime, _this.startTime) || other.startTime == _this.startTime)&&(identical(other.endTime, _this.endTime) || other.endTime == _this.endTime)&&(identical(other.room, _this.room) || other.room == _this.room)&&(identical(other.periodType, _this.periodType) || other.periodType == _this.periodType)&&(identical(other.breakLabel, _this.breakLabel) || other.breakLabel == _this.breakLabel)&&(identical(other.subject, _this.subject) || other.subject == _this.subject)&&(identical(other.teacher, _this.teacher) || other.teacher == _this.teacher));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TimetableEntry&&(identical(other.entryId, _this.entryId) || other.entryId == _this.entryId)&&(identical(other.dayOfWeek, _this.dayOfWeek) || other.dayOfWeek == _this.dayOfWeek)&&(identical(other.periodNumber, _this.periodNumber) || other.periodNumber == _this.periodNumber)&&(identical(other.startTime, _this.startTime) || other.startTime == _this.startTime)&&(identical(other.endTime, _this.endTime) || other.endTime == _this.endTime)&&(identical(other.room, _this.room) || other.room == _this.room)&&(identical(other.periodType, _this.periodType) || other.periodType == _this.periodType)&&(identical(other.breakLabel, _this.breakLabel) || other.breakLabel == _this.breakLabel)&&(identical(other.subject, _this.subject) || other.subject == _this.subject)&&(identical(other.teacher, _this.teacher) || other.teacher == _this.teacher)&&(identical(other.classRef, _this.classRef) || other.classRef == _this.classRef)&&(identical(other.sectionRef, _this.sectionRef) || other.sectionRef == _this.sectionRef));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as TimetableEntry;
-  return Object.hash(runtimeType,_this.entryId,_this.dayOfWeek,_this.periodNumber,_this.startTime,_this.endTime,_this.room,_this.periodType,_this.breakLabel,_this.subject,_this.teacher);
+  return Object.hash(runtimeType,_this.entryId,_this.dayOfWeek,_this.periodNumber,_this.startTime,_this.endTime,_this.room,_this.periodType,_this.breakLabel,_this.subject,_this.teacher,_this.classRef,_this.sectionRef);
 }
 
 @override
 String toString() {
   final _this = this as TimetableEntry;
-  return 'TimetableEntry(entryId: ${_this.entryId}, dayOfWeek: ${_this.dayOfWeek}, periodNumber: ${_this.periodNumber}, startTime: ${_this.startTime}, endTime: ${_this.endTime}, room: ${_this.room}, periodType: ${_this.periodType}, breakLabel: ${_this.breakLabel}, subject: ${_this.subject}, teacher: ${_this.teacher})';
+  return 'TimetableEntry(entryId: ${_this.entryId}, dayOfWeek: ${_this.dayOfWeek}, periodNumber: ${_this.periodNumber}, startTime: ${_this.startTime}, endTime: ${_this.endTime}, room: ${_this.room}, periodType: ${_this.periodType}, breakLabel: ${_this.breakLabel}, subject: ${_this.subject}, teacher: ${_this.teacher}, classRef: ${_this.classRef}, sectionRef: ${_this.sectionRef})';
 }
 
 
@@ -324,11 +324,11 @@ abstract mixin class $TimetableEntryCopyWith<$Res>  {
   factory $TimetableEntryCopyWith(TimetableEntry value, $Res Function(TimetableEntry) _then) = _$TimetableEntryCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'timetable_entry_id') String entryId,@JsonKey(name: 'day_of_week') int dayOfWeek,@JsonKey(name: 'period_number') int periodNumber,@JsonKey(name: 'start_time') DateTime startTime,@JsonKey(name: 'end_time') DateTime endTime, String? room,@JsonKey(name: 'period_type', unknownEnumValue: PeriodType.unknown) PeriodType periodType,@JsonKey(name: 'break_label') String? breakLabel,@JsonKey(name: 'academic_subjects') SubjectRef? subject,@JsonKey(name: 'staff_accounts') TeacherNameRef? teacher
+@JsonKey(name: 'timetable_entry_id') String entryId,@JsonKey(name: 'day_of_week') int dayOfWeek,@JsonKey(name: 'period_number') int periodNumber,@JsonKey(name: 'start_time') DateTime startTime,@JsonKey(name: 'end_time') DateTime endTime, String? room,@JsonKey(name: 'period_type', unknownEnumValue: PeriodType.unknown) PeriodType periodType,@JsonKey(name: 'break_label') String? breakLabel,@JsonKey(name: 'academic_subjects') SubjectRef? subject,@JsonKey(name: 'staff_accounts') TeacherNameRef? teacher,@JsonKey(name: 'classes') ClassRef? classRef,@JsonKey(name: 'sections') SectionRef? sectionRef
 });
 
 
-$SubjectRefCopyWith<$Res>? get subject;$TeacherNameRefCopyWith<$Res>? get teacher;
+$SubjectRefCopyWith<$Res>? get subject;$TeacherNameRefCopyWith<$Res>? get teacher;$ClassRefCopyWith<$Res>? get classRef;$SectionRefCopyWith<$Res>? get sectionRef;
 
 }
 /// @nodoc
@@ -341,7 +341,7 @@ class _$TimetableEntryCopyWithImpl<$Res>
 
 /// Create a copy of TimetableEntry
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? entryId = null,Object? dayOfWeek = null,Object? periodNumber = null,Object? startTime = null,Object? endTime = null,Object? room = freezed,Object? periodType = null,Object? breakLabel = freezed,Object? subject = freezed,Object? teacher = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? entryId = null,Object? dayOfWeek = null,Object? periodNumber = null,Object? startTime = null,Object? endTime = null,Object? room = freezed,Object? periodType = null,Object? breakLabel = freezed,Object? subject = freezed,Object? teacher = freezed,Object? classRef = freezed,Object? sectionRef = freezed,}) {
   return _then(TimetableEntry(
 entryId: null == entryId ? _self.entryId : entryId // ignore: cast_nullable_to_non_nullable
 as String,dayOfWeek: null == dayOfWeek ? _self.dayOfWeek : dayOfWeek // ignore: cast_nullable_to_non_nullable
@@ -353,7 +353,9 @@ as String?,periodType: null == periodType ? _self.periodType : periodType // ign
 as PeriodType,breakLabel: freezed == breakLabel ? _self.breakLabel : breakLabel // ignore: cast_nullable_to_non_nullable
 as String?,subject: freezed == subject ? _self.subject : subject // ignore: cast_nullable_to_non_nullable
 as SubjectRef?,teacher: freezed == teacher ? _self.teacher : teacher // ignore: cast_nullable_to_non_nullable
-as TeacherNameRef?,
+as TeacherNameRef?,classRef: freezed == classRef ? _self.classRef : classRef // ignore: cast_nullable_to_non_nullable
+as ClassRef?,sectionRef: freezed == sectionRef ? _self.sectionRef : sectionRef // ignore: cast_nullable_to_non_nullable
+as SectionRef?,
   ));
 }
 /// Create a copy of TimetableEntry
@@ -379,6 +381,30 @@ $TeacherNameRefCopyWith<$Res>? get teacher {
 
   return $TeacherNameRefCopyWith<$Res>(_self.teacher!, (value) {
     return _then(_self.copyWith(teacher: value));
+  });
+}/// Create a copy of TimetableEntry
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ClassRefCopyWith<$Res>? get classRef {
+    if (_self.classRef == null) {
+    return null;
+  }
+
+  return $ClassRefCopyWith<$Res>(_self.classRef!, (value) {
+    return _then(_self.copyWith(classRef: value));
+  });
+}/// Create a copy of TimetableEntry
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$SectionRefCopyWith<$Res>? get sectionRef {
+    if (_self.sectionRef == null) {
+    return null;
+  }
+
+  return $SectionRefCopyWith<$Res>(_self.sectionRef!, (value) {
+    return _then(_self.copyWith(sectionRef: value));
   });
 }
 }
@@ -462,10 +488,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'timetable_entry_id')  String entryId, @JsonKey(name: 'day_of_week')  int dayOfWeek, @JsonKey(name: 'period_number')  int periodNumber, @JsonKey(name: 'start_time')  DateTime startTime, @JsonKey(name: 'end_time')  DateTime endTime,  String? room, @JsonKey(name: 'period_type', unknownEnumValue: PeriodType.unknown)  PeriodType periodType, @JsonKey(name: 'break_label')  String? breakLabel, @JsonKey(name: 'academic_subjects')  SubjectRef? subject, @JsonKey(name: 'staff_accounts')  TeacherNameRef? teacher)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'timetable_entry_id')  String entryId, @JsonKey(name: 'day_of_week')  int dayOfWeek, @JsonKey(name: 'period_number')  int periodNumber, @JsonKey(name: 'start_time')  DateTime startTime, @JsonKey(name: 'end_time')  DateTime endTime,  String? room, @JsonKey(name: 'period_type', unknownEnumValue: PeriodType.unknown)  PeriodType periodType, @JsonKey(name: 'break_label')  String? breakLabel, @JsonKey(name: 'academic_subjects')  SubjectRef? subject, @JsonKey(name: 'staff_accounts')  TeacherNameRef? teacher, @JsonKey(name: 'classes')  ClassRef? classRef, @JsonKey(name: 'sections')  SectionRef? sectionRef)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TimetableEntry() when $default != null:
-return $default(_that.entryId,_that.dayOfWeek,_that.periodNumber,_that.startTime,_that.endTime,_that.room,_that.periodType,_that.breakLabel,_that.subject,_that.teacher);case _:
+return $default(_that.entryId,_that.dayOfWeek,_that.periodNumber,_that.startTime,_that.endTime,_that.room,_that.periodType,_that.breakLabel,_that.subject,_that.teacher,_that.classRef,_that.sectionRef);case _:
   return orElse();
 
 }
@@ -483,10 +509,10 @@ return $default(_that.entryId,_that.dayOfWeek,_that.periodNumber,_that.startTime
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'timetable_entry_id')  String entryId, @JsonKey(name: 'day_of_week')  int dayOfWeek, @JsonKey(name: 'period_number')  int periodNumber, @JsonKey(name: 'start_time')  DateTime startTime, @JsonKey(name: 'end_time')  DateTime endTime,  String? room, @JsonKey(name: 'period_type', unknownEnumValue: PeriodType.unknown)  PeriodType periodType, @JsonKey(name: 'break_label')  String? breakLabel, @JsonKey(name: 'academic_subjects')  SubjectRef? subject, @JsonKey(name: 'staff_accounts')  TeacherNameRef? teacher)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'timetable_entry_id')  String entryId, @JsonKey(name: 'day_of_week')  int dayOfWeek, @JsonKey(name: 'period_number')  int periodNumber, @JsonKey(name: 'start_time')  DateTime startTime, @JsonKey(name: 'end_time')  DateTime endTime,  String? room, @JsonKey(name: 'period_type', unknownEnumValue: PeriodType.unknown)  PeriodType periodType, @JsonKey(name: 'break_label')  String? breakLabel, @JsonKey(name: 'academic_subjects')  SubjectRef? subject, @JsonKey(name: 'staff_accounts')  TeacherNameRef? teacher, @JsonKey(name: 'classes')  ClassRef? classRef, @JsonKey(name: 'sections')  SectionRef? sectionRef)  $default,) {final _that = this;
 switch (_that) {
 case _TimetableEntry():
-return $default(_that.entryId,_that.dayOfWeek,_that.periodNumber,_that.startTime,_that.endTime,_that.room,_that.periodType,_that.breakLabel,_that.subject,_that.teacher);case _:
+return $default(_that.entryId,_that.dayOfWeek,_that.periodNumber,_that.startTime,_that.endTime,_that.room,_that.periodType,_that.breakLabel,_that.subject,_that.teacher,_that.classRef,_that.sectionRef);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -503,10 +529,10 @@ return $default(_that.entryId,_that.dayOfWeek,_that.periodNumber,_that.startTime
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'timetable_entry_id')  String entryId, @JsonKey(name: 'day_of_week')  int dayOfWeek, @JsonKey(name: 'period_number')  int periodNumber, @JsonKey(name: 'start_time')  DateTime startTime, @JsonKey(name: 'end_time')  DateTime endTime,  String? room, @JsonKey(name: 'period_type', unknownEnumValue: PeriodType.unknown)  PeriodType periodType, @JsonKey(name: 'break_label')  String? breakLabel, @JsonKey(name: 'academic_subjects')  SubjectRef? subject, @JsonKey(name: 'staff_accounts')  TeacherNameRef? teacher)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'timetable_entry_id')  String entryId, @JsonKey(name: 'day_of_week')  int dayOfWeek, @JsonKey(name: 'period_number')  int periodNumber, @JsonKey(name: 'start_time')  DateTime startTime, @JsonKey(name: 'end_time')  DateTime endTime,  String? room, @JsonKey(name: 'period_type', unknownEnumValue: PeriodType.unknown)  PeriodType periodType, @JsonKey(name: 'break_label')  String? breakLabel, @JsonKey(name: 'academic_subjects')  SubjectRef? subject, @JsonKey(name: 'staff_accounts')  TeacherNameRef? teacher, @JsonKey(name: 'classes')  ClassRef? classRef, @JsonKey(name: 'sections')  SectionRef? sectionRef)?  $default,) {final _that = this;
 switch (_that) {
 case _TimetableEntry() when $default != null:
-return $default(_that.entryId,_that.dayOfWeek,_that.periodNumber,_that.startTime,_that.endTime,_that.room,_that.periodType,_that.breakLabel,_that.subject,_that.teacher);case _:
+return $default(_that.entryId,_that.dayOfWeek,_that.periodNumber,_that.startTime,_that.endTime,_that.room,_that.periodType,_that.breakLabel,_that.subject,_that.teacher,_that.classRef,_that.sectionRef);case _:
   return null;
 
 }
@@ -518,7 +544,7 @@ return $default(_that.entryId,_that.dayOfWeek,_that.periodNumber,_that.startTime
 @JsonSerializable()
 
 class _TimetableEntry implements TimetableEntry {
-  const _TimetableEntry({@JsonKey(name: 'timetable_entry_id') required this.entryId, @JsonKey(name: 'day_of_week') required this.dayOfWeek, @JsonKey(name: 'period_number') required this.periodNumber, @JsonKey(name: 'start_time') required this.startTime, @JsonKey(name: 'end_time') required this.endTime, this.room, @JsonKey(name: 'period_type', unknownEnumValue: PeriodType.unknown) required this.periodType, @JsonKey(name: 'break_label') this.breakLabel, @JsonKey(name: 'academic_subjects') this.subject, @JsonKey(name: 'staff_accounts') this.teacher});
+  const _TimetableEntry({@JsonKey(name: 'timetable_entry_id') required this.entryId, @JsonKey(name: 'day_of_week') required this.dayOfWeek, @JsonKey(name: 'period_number') required this.periodNumber, @JsonKey(name: 'start_time') required this.startTime, @JsonKey(name: 'end_time') required this.endTime, this.room, @JsonKey(name: 'period_type', unknownEnumValue: PeriodType.unknown) required this.periodType, @JsonKey(name: 'break_label') this.breakLabel, @JsonKey(name: 'academic_subjects') this.subject, @JsonKey(name: 'staff_accounts') this.teacher, @JsonKey(name: 'classes') this.classRef, @JsonKey(name: 'sections') this.sectionRef});
   factory _TimetableEntry.fromJson(Map<String, dynamic> json) => _$TimetableEntryFromJson(json);
 
 @override@JsonKey(name: 'timetable_entry_id') final  String entryId;
@@ -531,6 +557,8 @@ class _TimetableEntry implements TimetableEntry {
 @override@JsonKey(name: 'break_label') final  String? breakLabel;
 @override@JsonKey(name: 'academic_subjects') final  SubjectRef? subject;
 @override@JsonKey(name: 'staff_accounts') final  TeacherNameRef? teacher;
+@override@JsonKey(name: 'classes') final  ClassRef? classRef;
+@override@JsonKey(name: 'sections') final  SectionRef? sectionRef;
 
 /// Create a copy of TimetableEntry
 /// with the given fields replaced by the non-null parameter values.
@@ -545,18 +573,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _TimetableEntry&&(identical(other.entryId, entryId) || other.entryId == entryId)&&(identical(other.dayOfWeek, dayOfWeek) || other.dayOfWeek == dayOfWeek)&&(identical(other.periodNumber, periodNumber) || other.periodNumber == periodNumber)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime)&&(identical(other.room, room) || other.room == room)&&(identical(other.periodType, periodType) || other.periodType == periodType)&&(identical(other.breakLabel, breakLabel) || other.breakLabel == breakLabel)&&(identical(other.subject, subject) || other.subject == subject)&&(identical(other.teacher, teacher) || other.teacher == teacher));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _TimetableEntry&&(identical(other.entryId, entryId) || other.entryId == entryId)&&(identical(other.dayOfWeek, dayOfWeek) || other.dayOfWeek == dayOfWeek)&&(identical(other.periodNumber, periodNumber) || other.periodNumber == periodNumber)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime)&&(identical(other.room, room) || other.room == room)&&(identical(other.periodType, periodType) || other.periodType == periodType)&&(identical(other.breakLabel, breakLabel) || other.breakLabel == breakLabel)&&(identical(other.subject, subject) || other.subject == subject)&&(identical(other.teacher, teacher) || other.teacher == teacher)&&(identical(other.classRef, classRef) || other.classRef == classRef)&&(identical(other.sectionRef, sectionRef) || other.sectionRef == sectionRef));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,entryId,dayOfWeek,periodNumber,startTime,endTime,room,periodType,breakLabel,subject,teacher);
+    return Object.hash(runtimeType,entryId,dayOfWeek,periodNumber,startTime,endTime,room,periodType,breakLabel,subject,teacher,classRef,sectionRef);
 }
 
 @override
 String toString() {
-    return 'TimetableEntry(entryId: $entryId, dayOfWeek: $dayOfWeek, periodNumber: $periodNumber, startTime: $startTime, endTime: $endTime, room: $room, periodType: $periodType, breakLabel: $breakLabel, subject: $subject, teacher: $teacher)';
+    return 'TimetableEntry(entryId: $entryId, dayOfWeek: $dayOfWeek, periodNumber: $periodNumber, startTime: $startTime, endTime: $endTime, room: $room, periodType: $periodType, breakLabel: $breakLabel, subject: $subject, teacher: $teacher, classRef: $classRef, sectionRef: $sectionRef)';
 }
 
 
@@ -567,11 +595,11 @@ abstract mixin class _$TimetableEntryCopyWith<$Res> implements $TimetableEntryCo
   factory _$TimetableEntryCopyWith(_TimetableEntry value, $Res Function(_TimetableEntry) _then) = __$TimetableEntryCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'timetable_entry_id') String entryId,@JsonKey(name: 'day_of_week') int dayOfWeek,@JsonKey(name: 'period_number') int periodNumber,@JsonKey(name: 'start_time') DateTime startTime,@JsonKey(name: 'end_time') DateTime endTime, String? room,@JsonKey(name: 'period_type', unknownEnumValue: PeriodType.unknown) PeriodType periodType,@JsonKey(name: 'break_label') String? breakLabel,@JsonKey(name: 'academic_subjects') SubjectRef? subject,@JsonKey(name: 'staff_accounts') TeacherNameRef? teacher
+@JsonKey(name: 'timetable_entry_id') String entryId,@JsonKey(name: 'day_of_week') int dayOfWeek,@JsonKey(name: 'period_number') int periodNumber,@JsonKey(name: 'start_time') DateTime startTime,@JsonKey(name: 'end_time') DateTime endTime, String? room,@JsonKey(name: 'period_type', unknownEnumValue: PeriodType.unknown) PeriodType periodType,@JsonKey(name: 'break_label') String? breakLabel,@JsonKey(name: 'academic_subjects') SubjectRef? subject,@JsonKey(name: 'staff_accounts') TeacherNameRef? teacher,@JsonKey(name: 'classes') ClassRef? classRef,@JsonKey(name: 'sections') SectionRef? sectionRef
 });
 
 
-@override $SubjectRefCopyWith<$Res>? get subject;@override $TeacherNameRefCopyWith<$Res>? get teacher;
+@override $SubjectRefCopyWith<$Res>? get subject;@override $TeacherNameRefCopyWith<$Res>? get teacher;@override $ClassRefCopyWith<$Res>? get classRef;@override $SectionRefCopyWith<$Res>? get sectionRef;
 
 }
 /// @nodoc
@@ -584,7 +612,7 @@ class __$TimetableEntryCopyWithImpl<$Res>
 
 /// Create a copy of TimetableEntry
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? entryId = null,Object? dayOfWeek = null,Object? periodNumber = null,Object? startTime = null,Object? endTime = null,Object? room = freezed,Object? periodType = null,Object? breakLabel = freezed,Object? subject = freezed,Object? teacher = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? entryId = null,Object? dayOfWeek = null,Object? periodNumber = null,Object? startTime = null,Object? endTime = null,Object? room = freezed,Object? periodType = null,Object? breakLabel = freezed,Object? subject = freezed,Object? teacher = freezed,Object? classRef = freezed,Object? sectionRef = freezed,}) {
   return _then(_TimetableEntry(
 entryId: null == entryId ? _self.entryId : entryId // ignore: cast_nullable_to_non_nullable
 as String,dayOfWeek: null == dayOfWeek ? _self.dayOfWeek : dayOfWeek // ignore: cast_nullable_to_non_nullable
@@ -596,7 +624,9 @@ as String?,periodType: null == periodType ? _self.periodType : periodType // ign
 as PeriodType,breakLabel: freezed == breakLabel ? _self.breakLabel : breakLabel // ignore: cast_nullable_to_non_nullable
 as String?,subject: freezed == subject ? _self.subject : subject // ignore: cast_nullable_to_non_nullable
 as SubjectRef?,teacher: freezed == teacher ? _self.teacher : teacher // ignore: cast_nullable_to_non_nullable
-as TeacherNameRef?,
+as TeacherNameRef?,classRef: freezed == classRef ? _self.classRef : classRef // ignore: cast_nullable_to_non_nullable
+as ClassRef?,sectionRef: freezed == sectionRef ? _self.sectionRef : sectionRef // ignore: cast_nullable_to_non_nullable
+as SectionRef?,
   ));
 }
 
@@ -623,6 +653,30 @@ $TeacherNameRefCopyWith<$Res>? get teacher {
 
   return $TeacherNameRefCopyWith<$Res>(_self.teacher!, (value) {
     return _then(_self.copyWith(teacher: value));
+  });
+}/// Create a copy of TimetableEntry
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ClassRefCopyWith<$Res>? get classRef {
+    if (_self.classRef == null) {
+    return null;
+  }
+
+  return $ClassRefCopyWith<$Res>(_self.classRef!, (value) {
+    return _then(_self.copyWith(classRef: value));
+  });
+}/// Create a copy of TimetableEntry
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$SectionRefCopyWith<$Res>? get sectionRef {
+    if (_self.sectionRef == null) {
+    return null;
+  }
+
+  return $SectionRefCopyWith<$Res>(_self.sectionRef!, (value) {
+    return _then(_self.copyWith(sectionRef: value));
   });
 }
 }

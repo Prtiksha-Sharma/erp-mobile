@@ -40,6 +40,9 @@ _StudentLeave _$StudentLeaveFromJson(Map<String, dynamic> json) =>
       reason: json['reason'] as String?,
       status: json['status'] as String?,
       remarks: json['remarks'] as String?,
+      student: json['students'] == null
+          ? null
+          : StudentBrief.fromJson(json['students'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$StudentLeaveToJson(_StudentLeave instance) =>
@@ -52,6 +55,7 @@ Map<String, dynamic> _$StudentLeaveToJson(_StudentLeave instance) =>
       'reason': instance.reason,
       'status': instance.status,
       'remarks': instance.remarks,
+      'students': instance.student,
     };
 
 _MedicalInfo _$MedicalInfoFromJson(Map<String, dynamic> json) => _MedicalInfo(

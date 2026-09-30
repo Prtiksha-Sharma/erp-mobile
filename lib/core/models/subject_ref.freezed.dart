@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SubjectRef {
 
-@JsonKey(name: 'subject_name') String get subjectName;
+@JsonKey(name: 'subject_id') String? get subjectId;@JsonKey(name: 'subject_name') String get subjectName;
 /// Create a copy of SubjectRef
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,20 +30,20 @@ $SubjectRefCopyWith<SubjectRef> get copyWith => _$SubjectRefCopyWithImpl<Subject
 @override
 bool operator ==(Object other) {
   final _this = this as SubjectRef;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SubjectRef&&(identical(other.subjectName, _this.subjectName) || other.subjectName == _this.subjectName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SubjectRef&&(identical(other.subjectId, _this.subjectId) || other.subjectId == _this.subjectId)&&(identical(other.subjectName, _this.subjectName) || other.subjectName == _this.subjectName));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as SubjectRef;
-  return Object.hash(runtimeType,_this.subjectName);
+  return Object.hash(runtimeType,_this.subjectId,_this.subjectName);
 }
 
 @override
 String toString() {
   final _this = this as SubjectRef;
-  return 'SubjectRef(subjectName: ${_this.subjectName})';
+  return 'SubjectRef(subjectId: ${_this.subjectId}, subjectName: ${_this.subjectName})';
 }
 
 
@@ -54,7 +54,7 @@ abstract mixin class $SubjectRefCopyWith<$Res>  {
   factory $SubjectRefCopyWith(SubjectRef value, $Res Function(SubjectRef) _then) = _$SubjectRefCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'subject_name') String subjectName
+@JsonKey(name: 'subject_id') String? subjectId,@JsonKey(name: 'subject_name') String subjectName
 });
 
 
@@ -71,9 +71,10 @@ class _$SubjectRefCopyWithImpl<$Res>
 
 /// Create a copy of SubjectRef
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? subjectName = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? subjectId = freezed,Object? subjectName = null,}) {
   return _then(SubjectRef(
-subjectName: null == subjectName ? _self.subjectName : subjectName // ignore: cast_nullable_to_non_nullable
+subjectId: freezed == subjectId ? _self.subjectId : subjectId // ignore: cast_nullable_to_non_nullable
+as String?,subjectName: null == subjectName ? _self.subjectName : subjectName // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -159,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'subject_name')  String subjectName)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'subject_id')  String? subjectId, @JsonKey(name: 'subject_name')  String subjectName)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SubjectRef() when $default != null:
-return $default(_that.subjectName);case _:
+return $default(_that.subjectId,_that.subjectName);case _:
   return orElse();
 
 }
@@ -180,10 +181,10 @@ return $default(_that.subjectName);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'subject_name')  String subjectName)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'subject_id')  String? subjectId, @JsonKey(name: 'subject_name')  String subjectName)  $default,) {final _that = this;
 switch (_that) {
 case _SubjectRef():
-return $default(_that.subjectName);case _:
+return $default(_that.subjectId,_that.subjectName);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,10 +201,10 @@ return $default(_that.subjectName);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'subject_name')  String subjectName)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'subject_id')  String? subjectId, @JsonKey(name: 'subject_name')  String subjectName)?  $default,) {final _that = this;
 switch (_that) {
 case _SubjectRef() when $default != null:
-return $default(_that.subjectName);case _:
+return $default(_that.subjectId,_that.subjectName);case _:
   return null;
 
 }
@@ -215,9 +216,10 @@ return $default(_that.subjectName);case _:
 @JsonSerializable()
 
 class _SubjectRef implements SubjectRef {
-  const _SubjectRef({@JsonKey(name: 'subject_name') required this.subjectName});
+  const _SubjectRef({@JsonKey(name: 'subject_id') this.subjectId, @JsonKey(name: 'subject_name') required this.subjectName});
   factory _SubjectRef.fromJson(Map<String, dynamic> json) => _$SubjectRefFromJson(json);
 
+@override@JsonKey(name: 'subject_id') final  String? subjectId;
 @override@JsonKey(name: 'subject_name') final  String subjectName;
 
 /// Create a copy of SubjectRef
@@ -233,18 +235,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SubjectRef&&(identical(other.subjectName, subjectName) || other.subjectName == subjectName));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SubjectRef&&(identical(other.subjectId, subjectId) || other.subjectId == subjectId)&&(identical(other.subjectName, subjectName) || other.subjectName == subjectName));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,subjectName);
+    return Object.hash(runtimeType,subjectId,subjectName);
 }
 
 @override
 String toString() {
-    return 'SubjectRef(subjectName: $subjectName)';
+    return 'SubjectRef(subjectId: $subjectId, subjectName: $subjectName)';
 }
 
 
@@ -255,7 +257,7 @@ abstract mixin class _$SubjectRefCopyWith<$Res> implements $SubjectRefCopyWith<$
   factory _$SubjectRefCopyWith(_SubjectRef value, $Res Function(_SubjectRef) _then) = __$SubjectRefCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'subject_name') String subjectName
+@JsonKey(name: 'subject_id') String? subjectId,@JsonKey(name: 'subject_name') String subjectName
 });
 
 
@@ -272,9 +274,10 @@ class __$SubjectRefCopyWithImpl<$Res>
 
 /// Create a copy of SubjectRef
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? subjectName = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? subjectId = freezed,Object? subjectName = null,}) {
   return _then(_SubjectRef(
-subjectName: null == subjectName ? _self.subjectName : subjectName // ignore: cast_nullable_to_non_nullable
+subjectId: freezed == subjectId ? _self.subjectId : subjectId // ignore: cast_nullable_to_non_nullable
+as String?,subjectName: null == subjectName ? _self.subjectName : subjectName // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

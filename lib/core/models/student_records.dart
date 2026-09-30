@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../utils/json_converters.dart';
 import 'academic_refs.dart';
+import 'student_brief.dart';
 
 part 'student_records.freezed.dart';
 part 'student_records.g.dart';
@@ -30,6 +31,10 @@ abstract class StudentDocument with _$StudentDocument {
 
 /// GET /student/leaves — admin/student/leaves.service.js. `total_days` is a
 /// Prisma Decimal (JSON string, e.g. "3").
+///
+/// Also GET /teacher/leaves (teacher/leaves.service.js#listMyClassLeaves) —
+/// the same student_leaves row plus a `students` include, which is null on
+/// the student's own endpoint.
 @freezed
 abstract class StudentLeave with _$StudentLeave {
   const factory StudentLeave({
@@ -41,6 +46,7 @@ abstract class StudentLeave with _$StudentLeave {
     String? reason,
     String? status,
     String? remarks,
+    @JsonKey(name: 'students') StudentBrief? student,
   }) = _StudentLeave;
 
   factory StudentLeave.fromJson(Map<String, dynamic> json) => _$StudentLeaveFromJson(json);

@@ -33,6 +33,12 @@ _TimetableEntry _$TimetableEntryFromJson(
   teacher: json['staff_accounts'] == null
       ? null
       : TeacherNameRef.fromJson(json['staff_accounts'] as Map<String, dynamic>),
+  classRef: json['classes'] == null
+      ? null
+      : ClassRef.fromJson(json['classes'] as Map<String, dynamic>),
+  sectionRef: json['sections'] == null
+      ? null
+      : SectionRef.fromJson(json['sections'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$TimetableEntryToJson(_TimetableEntry instance) =>
@@ -47,6 +53,8 @@ Map<String, dynamic> _$TimetableEntryToJson(_TimetableEntry instance) =>
       'break_label': instance.breakLabel,
       'academic_subjects': instance.subject,
       'staff_accounts': instance.teacher,
+      'classes': instance.classRef,
+      'sections': instance.sectionRef,
     };
 
 const _$PeriodTypeEnumMap = {
