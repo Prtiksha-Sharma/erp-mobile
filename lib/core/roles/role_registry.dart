@@ -1,4 +1,5 @@
 import '../../features/parent/parent_module.dart';
+import '../../features/student/student_module.dart';
 import 'app_role.dart';
 import 'role_module.dart';
 
@@ -9,7 +10,7 @@ import 'role_module.dart';
 /// instead of a refactor.
 final Map<AppRole, RoleModule> roleRegistry = <AppRole, RoleModule>{
   AppRole.parent: ParentModule(),
-  // AppRole.student: StudentModule(),
+  AppRole.student: StudentModule(),
   // AppRole.teacher: TeacherModule(),
   // AppRole.driver: DriverModule(),
 };

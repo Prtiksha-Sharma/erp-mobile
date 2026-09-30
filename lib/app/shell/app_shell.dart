@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/auth/auth_provider.dart';
 import '../../core/roles/role_registry.dart';
+import '../../ui/widgets/responsive.dart';
 
 /// The single shared scaffold every role renders inside. Bottom-nav tabs
 /// come from the active role's `RoleModule.tabs()` — never hardcoded here
@@ -33,6 +34,32 @@ class AppShell extends ConsumerWidget {
     final currentPath = GoRouterState.of(context).matchedLocation;
     var currentIndex = tabs.indexWhere((t) => currentPath.startsWith(t.path));
     if (currentIndex < 0) currentIndex = 0;
+
+    // Landscape tablets / large foldables: a side rail instead of a bottom
+    // bar, per Material 3 guidance for expanded widths. Same tabs, same
+    // navigation — only the placement changes; phones are unaffected.
+    if (MediaQuery.sizeOf(context).width >= Breakpoints.expanded) {
+      return Scaffold(
+        body: Row(
+          children: [
+            SafeArea(
+              right: false,
+              child: NavigationRail(
+                selectedIndex: currentIndex,
+                onDestinationSelected: (i) => context.go(tabs[i].path),
+                labelType: NavigationRailLabelType.all,
+                destinations: [
+                  for (final tab in tabs)
+                    NavigationRailDestination(icon: Icon(tab.icon), label: Text(tab.label)),
+                ],
+              ),
+            ),
+            const VerticalDivider(width: 1),
+            Expanded(child: child),
+          ],
+        ),
+      );
+    }
 
     return Scaffold(
       body: child,
