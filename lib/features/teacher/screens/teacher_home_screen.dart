@@ -76,7 +76,7 @@ class TeacherHomeScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
       appBar: AppBar(
-        title: const Text('Vidyaprabandhan Teacher'),
+        title: const Text('Vidyaprabandhan'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
