@@ -38,7 +38,7 @@ class StudentHomeScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
       appBar: AppBar(
-        title: const Text('EduSoft Student'),
+        title: const Text('Vidyaprabandhan Student'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
