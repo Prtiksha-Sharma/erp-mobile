@@ -62,3 +62,6 @@ ios/Runner/GoogleService-Info.plist
 # Local env overrides (config/dev.json and config/prod.json ARE committed — see README)
 config/local.json
 .env
+
+CLAUDE.md
+Proj.md

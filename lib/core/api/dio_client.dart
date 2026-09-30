@@ -47,6 +47,13 @@ class DioClient {
   /// per the project's layer rule: app -> features -> shared/core -> lib).
   void Function()? onUnauthorized;
 
+  /// Put `{DioClient.skipSessionExpiry: true}` in a request's
+  /// `Options.extra` when that endpoint uses 401 for something other than
+  /// "session expired" — e.g. POST /student/change-password answers a wrong
+  /// current password with 401 "Current password is incorrect", which must
+  /// not log the user out.
+  static const skipSessionExpiry = 'skipSessionExpiry';
+
   late final Dio dio = _build();
 
   Dio _build() {
@@ -72,7 +79,7 @@ class DioClient {
           handler.next(options);
         },
         onError: (error, handler) async {
-          if (error.response?.statusCode == 401) {
+          if (error.response?.statusCode == 401 && error.requestOptions.extra[skipSessionExpiry] != true) {
             await SecureStorage.instance.clearAll();
             onUnauthorized?.call();
           }
