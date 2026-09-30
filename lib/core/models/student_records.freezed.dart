@@ -304,7 +304,7 @@ as DateTime?,
 /// @nodoc
 mixin _$StudentLeave {
 
-@JsonKey(name: 'leave_id') String get leaveId;@JsonKey(name: 'leave_type') String get leaveType;@JsonKey(name: 'from_date') DateTime get fromDate;@JsonKey(name: 'to_date') DateTime get toDate;@JsonKey(name: 'total_days')@LooseNumConverter() num? get totalDays; String? get reason; String? get status; String? get remarks;
+@JsonKey(name: 'leave_id') String get leaveId;@JsonKey(name: 'leave_type') String get leaveType;@JsonKey(name: 'from_date') DateTime get fromDate;@JsonKey(name: 'to_date') DateTime get toDate;@JsonKey(name: 'total_days')@LooseNumConverter() num? get totalDays; String? get reason; String? get status; String? get remarks;@JsonKey(name: 'students') StudentBrief? get student;
 /// Create a copy of StudentLeave
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -318,20 +318,20 @@ $StudentLeaveCopyWith<StudentLeave> get copyWith => _$StudentLeaveCopyWithImpl<S
 @override
 bool operator ==(Object other) {
   final _this = this as StudentLeave;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is StudentLeave&&(identical(other.leaveId, _this.leaveId) || other.leaveId == _this.leaveId)&&(identical(other.leaveType, _this.leaveType) || other.leaveType == _this.leaveType)&&(identical(other.fromDate, _this.fromDate) || other.fromDate == _this.fromDate)&&(identical(other.toDate, _this.toDate) || other.toDate == _this.toDate)&&(identical(other.totalDays, _this.totalDays) || other.totalDays == _this.totalDays)&&(identical(other.reason, _this.reason) || other.reason == _this.reason)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.remarks, _this.remarks) || other.remarks == _this.remarks));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is StudentLeave&&(identical(other.leaveId, _this.leaveId) || other.leaveId == _this.leaveId)&&(identical(other.leaveType, _this.leaveType) || other.leaveType == _this.leaveType)&&(identical(other.fromDate, _this.fromDate) || other.fromDate == _this.fromDate)&&(identical(other.toDate, _this.toDate) || other.toDate == _this.toDate)&&(identical(other.totalDays, _this.totalDays) || other.totalDays == _this.totalDays)&&(identical(other.reason, _this.reason) || other.reason == _this.reason)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.remarks, _this.remarks) || other.remarks == _this.remarks)&&(identical(other.student, _this.student) || other.student == _this.student));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as StudentLeave;
-  return Object.hash(runtimeType,_this.leaveId,_this.leaveType,_this.fromDate,_this.toDate,_this.totalDays,_this.reason,_this.status,_this.remarks);
+  return Object.hash(runtimeType,_this.leaveId,_this.leaveType,_this.fromDate,_this.toDate,_this.totalDays,_this.reason,_this.status,_this.remarks,_this.student);
 }
 
 @override
 String toString() {
   final _this = this as StudentLeave;
-  return 'StudentLeave(leaveId: ${_this.leaveId}, leaveType: ${_this.leaveType}, fromDate: ${_this.fromDate}, toDate: ${_this.toDate}, totalDays: ${_this.totalDays}, reason: ${_this.reason}, status: ${_this.status}, remarks: ${_this.remarks})';
+  return 'StudentLeave(leaveId: ${_this.leaveId}, leaveType: ${_this.leaveType}, fromDate: ${_this.fromDate}, toDate: ${_this.toDate}, totalDays: ${_this.totalDays}, reason: ${_this.reason}, status: ${_this.status}, remarks: ${_this.remarks}, student: ${_this.student})';
 }
 
 
@@ -342,11 +342,11 @@ abstract mixin class $StudentLeaveCopyWith<$Res>  {
   factory $StudentLeaveCopyWith(StudentLeave value, $Res Function(StudentLeave) _then) = _$StudentLeaveCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'leave_id') String leaveId,@JsonKey(name: 'leave_type') String leaveType,@JsonKey(name: 'from_date') DateTime fromDate,@JsonKey(name: 'to_date') DateTime toDate,@JsonKey(name: 'total_days')@LooseNumConverter() num? totalDays, String? reason, String? status, String? remarks
+@JsonKey(name: 'leave_id') String leaveId,@JsonKey(name: 'leave_type') String leaveType,@JsonKey(name: 'from_date') DateTime fromDate,@JsonKey(name: 'to_date') DateTime toDate,@JsonKey(name: 'total_days')@LooseNumConverter() num? totalDays, String? reason, String? status, String? remarks,@JsonKey(name: 'students') StudentBrief? student
 });
 
 
-
+$StudentBriefCopyWith<$Res>? get student;
 
 }
 /// @nodoc
@@ -359,7 +359,7 @@ class _$StudentLeaveCopyWithImpl<$Res>
 
 /// Create a copy of StudentLeave
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? leaveId = null,Object? leaveType = null,Object? fromDate = null,Object? toDate = null,Object? totalDays = freezed,Object? reason = freezed,Object? status = freezed,Object? remarks = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? leaveId = null,Object? leaveType = null,Object? fromDate = null,Object? toDate = null,Object? totalDays = freezed,Object? reason = freezed,Object? status = freezed,Object? remarks = freezed,Object? student = freezed,}) {
   return _then(StudentLeave(
 leaveId: null == leaveId ? _self.leaveId : leaveId // ignore: cast_nullable_to_non_nullable
 as String,leaveType: null == leaveType ? _self.leaveType : leaveType // ignore: cast_nullable_to_non_nullable
@@ -369,10 +369,23 @@ as DateTime,totalDays: freezed == totalDays ? _self.totalDays : totalDays // ign
 as num?,reason: freezed == reason ? _self.reason : reason // ignore: cast_nullable_to_non_nullable
 as String?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String?,remarks: freezed == remarks ? _self.remarks : remarks // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,student: freezed == student ? _self.student : student // ignore: cast_nullable_to_non_nullable
+as StudentBrief?,
   ));
 }
+/// Create a copy of StudentLeave
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$StudentBriefCopyWith<$Res>? get student {
+    if (_self.student == null) {
+    return null;
+  }
 
+  return $StudentBriefCopyWith<$Res>(_self.student!, (value) {
+    return _then(_self.copyWith(student: value));
+  });
+}
 }
 
 
@@ -454,10 +467,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'leave_id')  String leaveId, @JsonKey(name: 'leave_type')  String leaveType, @JsonKey(name: 'from_date')  DateTime fromDate, @JsonKey(name: 'to_date')  DateTime toDate, @JsonKey(name: 'total_days')@LooseNumConverter()  num? totalDays,  String? reason,  String? status,  String? remarks)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'leave_id')  String leaveId, @JsonKey(name: 'leave_type')  String leaveType, @JsonKey(name: 'from_date')  DateTime fromDate, @JsonKey(name: 'to_date')  DateTime toDate, @JsonKey(name: 'total_days')@LooseNumConverter()  num? totalDays,  String? reason,  String? status,  String? remarks, @JsonKey(name: 'students')  StudentBrief? student)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _StudentLeave() when $default != null:
-return $default(_that.leaveId,_that.leaveType,_that.fromDate,_that.toDate,_that.totalDays,_that.reason,_that.status,_that.remarks);case _:
+return $default(_that.leaveId,_that.leaveType,_that.fromDate,_that.toDate,_that.totalDays,_that.reason,_that.status,_that.remarks,_that.student);case _:
   return orElse();
 
 }
@@ -475,10 +488,10 @@ return $default(_that.leaveId,_that.leaveType,_that.fromDate,_that.toDate,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'leave_id')  String leaveId, @JsonKey(name: 'leave_type')  String leaveType, @JsonKey(name: 'from_date')  DateTime fromDate, @JsonKey(name: 'to_date')  DateTime toDate, @JsonKey(name: 'total_days')@LooseNumConverter()  num? totalDays,  String? reason,  String? status,  String? remarks)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'leave_id')  String leaveId, @JsonKey(name: 'leave_type')  String leaveType, @JsonKey(name: 'from_date')  DateTime fromDate, @JsonKey(name: 'to_date')  DateTime toDate, @JsonKey(name: 'total_days')@LooseNumConverter()  num? totalDays,  String? reason,  String? status,  String? remarks, @JsonKey(name: 'students')  StudentBrief? student)  $default,) {final _that = this;
 switch (_that) {
 case _StudentLeave():
-return $default(_that.leaveId,_that.leaveType,_that.fromDate,_that.toDate,_that.totalDays,_that.reason,_that.status,_that.remarks);case _:
+return $default(_that.leaveId,_that.leaveType,_that.fromDate,_that.toDate,_that.totalDays,_that.reason,_that.status,_that.remarks,_that.student);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -495,10 +508,10 @@ return $default(_that.leaveId,_that.leaveType,_that.fromDate,_that.toDate,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'leave_id')  String leaveId, @JsonKey(name: 'leave_type')  String leaveType, @JsonKey(name: 'from_date')  DateTime fromDate, @JsonKey(name: 'to_date')  DateTime toDate, @JsonKey(name: 'total_days')@LooseNumConverter()  num? totalDays,  String? reason,  String? status,  String? remarks)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'leave_id')  String leaveId, @JsonKey(name: 'leave_type')  String leaveType, @JsonKey(name: 'from_date')  DateTime fromDate, @JsonKey(name: 'to_date')  DateTime toDate, @JsonKey(name: 'total_days')@LooseNumConverter()  num? totalDays,  String? reason,  String? status,  String? remarks, @JsonKey(name: 'students')  StudentBrief? student)?  $default,) {final _that = this;
 switch (_that) {
 case _StudentLeave() when $default != null:
-return $default(_that.leaveId,_that.leaveType,_that.fromDate,_that.toDate,_that.totalDays,_that.reason,_that.status,_that.remarks);case _:
+return $default(_that.leaveId,_that.leaveType,_that.fromDate,_that.toDate,_that.totalDays,_that.reason,_that.status,_that.remarks,_that.student);case _:
   return null;
 
 }
@@ -510,7 +523,7 @@ return $default(_that.leaveId,_that.leaveType,_that.fromDate,_that.toDate,_that.
 @JsonSerializable()
 
 class _StudentLeave implements StudentLeave {
-  const _StudentLeave({@JsonKey(name: 'leave_id') required this.leaveId, @JsonKey(name: 'leave_type') required this.leaveType, @JsonKey(name: 'from_date') required this.fromDate, @JsonKey(name: 'to_date') required this.toDate, @JsonKey(name: 'total_days')@LooseNumConverter() this.totalDays, this.reason, this.status, this.remarks});
+  const _StudentLeave({@JsonKey(name: 'leave_id') required this.leaveId, @JsonKey(name: 'leave_type') required this.leaveType, @JsonKey(name: 'from_date') required this.fromDate, @JsonKey(name: 'to_date') required this.toDate, @JsonKey(name: 'total_days')@LooseNumConverter() this.totalDays, this.reason, this.status, this.remarks, @JsonKey(name: 'students') this.student});
   factory _StudentLeave.fromJson(Map<String, dynamic> json) => _$StudentLeaveFromJson(json);
 
 @override@JsonKey(name: 'leave_id') final  String leaveId;
@@ -521,6 +534,7 @@ class _StudentLeave implements StudentLeave {
 @override final  String? reason;
 @override final  String? status;
 @override final  String? remarks;
+@override@JsonKey(name: 'students') final  StudentBrief? student;
 
 /// Create a copy of StudentLeave
 /// with the given fields replaced by the non-null parameter values.
@@ -535,18 +549,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _StudentLeave&&(identical(other.leaveId, leaveId) || other.leaveId == leaveId)&&(identical(other.leaveType, leaveType) || other.leaveType == leaveType)&&(identical(other.fromDate, fromDate) || other.fromDate == fromDate)&&(identical(other.toDate, toDate) || other.toDate == toDate)&&(identical(other.totalDays, totalDays) || other.totalDays == totalDays)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.status, status) || other.status == status)&&(identical(other.remarks, remarks) || other.remarks == remarks));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _StudentLeave&&(identical(other.leaveId, leaveId) || other.leaveId == leaveId)&&(identical(other.leaveType, leaveType) || other.leaveType == leaveType)&&(identical(other.fromDate, fromDate) || other.fromDate == fromDate)&&(identical(other.toDate, toDate) || other.toDate == toDate)&&(identical(other.totalDays, totalDays) || other.totalDays == totalDays)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.status, status) || other.status == status)&&(identical(other.remarks, remarks) || other.remarks == remarks)&&(identical(other.student, student) || other.student == student));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,leaveId,leaveType,fromDate,toDate,totalDays,reason,status,remarks);
+    return Object.hash(runtimeType,leaveId,leaveType,fromDate,toDate,totalDays,reason,status,remarks,student);
 }
 
 @override
 String toString() {
-    return 'StudentLeave(leaveId: $leaveId, leaveType: $leaveType, fromDate: $fromDate, toDate: $toDate, totalDays: $totalDays, reason: $reason, status: $status, remarks: $remarks)';
+    return 'StudentLeave(leaveId: $leaveId, leaveType: $leaveType, fromDate: $fromDate, toDate: $toDate, totalDays: $totalDays, reason: $reason, status: $status, remarks: $remarks, student: $student)';
 }
 
 
@@ -557,11 +571,11 @@ abstract mixin class _$StudentLeaveCopyWith<$Res> implements $StudentLeaveCopyWi
   factory _$StudentLeaveCopyWith(_StudentLeave value, $Res Function(_StudentLeave) _then) = __$StudentLeaveCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'leave_id') String leaveId,@JsonKey(name: 'leave_type') String leaveType,@JsonKey(name: 'from_date') DateTime fromDate,@JsonKey(name: 'to_date') DateTime toDate,@JsonKey(name: 'total_days')@LooseNumConverter() num? totalDays, String? reason, String? status, String? remarks
+@JsonKey(name: 'leave_id') String leaveId,@JsonKey(name: 'leave_type') String leaveType,@JsonKey(name: 'from_date') DateTime fromDate,@JsonKey(name: 'to_date') DateTime toDate,@JsonKey(name: 'total_days')@LooseNumConverter() num? totalDays, String? reason, String? status, String? remarks,@JsonKey(name: 'students') StudentBrief? student
 });
 
 
-
+@override $StudentBriefCopyWith<$Res>? get student;
 
 }
 /// @nodoc
@@ -574,7 +588,7 @@ class __$StudentLeaveCopyWithImpl<$Res>
 
 /// Create a copy of StudentLeave
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? leaveId = null,Object? leaveType = null,Object? fromDate = null,Object? toDate = null,Object? totalDays = freezed,Object? reason = freezed,Object? status = freezed,Object? remarks = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? leaveId = null,Object? leaveType = null,Object? fromDate = null,Object? toDate = null,Object? totalDays = freezed,Object? reason = freezed,Object? status = freezed,Object? remarks = freezed,Object? student = freezed,}) {
   return _then(_StudentLeave(
 leaveId: null == leaveId ? _self.leaveId : leaveId // ignore: cast_nullable_to_non_nullable
 as String,leaveType: null == leaveType ? _self.leaveType : leaveType // ignore: cast_nullable_to_non_nullable
@@ -584,11 +598,24 @@ as DateTime,totalDays: freezed == totalDays ? _self.totalDays : totalDays // ign
 as num?,reason: freezed == reason ? _self.reason : reason // ignore: cast_nullable_to_non_nullable
 as String?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String?,remarks: freezed == remarks ? _self.remarks : remarks // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,student: freezed == student ? _self.student : student // ignore: cast_nullable_to_non_nullable
+as StudentBrief?,
   ));
 }
 
+/// Create a copy of StudentLeave
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$StudentBriefCopyWith<$Res>? get student {
+    if (_self.student == null) {
+    return null;
+  }
 
+  return $StudentBriefCopyWith<$Res>(_self.student!, (value) {
+    return _then(_self.copyWith(student: value));
+  });
+}
 }
 
 

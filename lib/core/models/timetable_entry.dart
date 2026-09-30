@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../utils/datetime_extensions.dart';
+import 'academic_refs.dart';
 import 'subject_ref.dart';
 
 part 'timetable_entry.freezed.dart';
@@ -43,6 +44,11 @@ abstract class TeacherNameRef with _$TeacherNameRef {
 /// `subject`/`teacher` are null exactly when periodType is breakPeriod
 /// (confirmed by schema comment, not yet seen live — no BREAK period
 /// exists in the test data used for verification).
+///
+/// GET /teacher/timetable (teacher/timetable.service.js) returns the same
+/// row but includes `classes`/`sections` instead of `staff_accounts` — a
+/// teacher's own timetable spans every class they teach — so those two
+/// relations are optional here and null on the parent/student endpoints.
 @freezed
 abstract class TimetableEntry with _$TimetableEntry {
   const factory TimetableEntry({
@@ -58,6 +64,8 @@ abstract class TimetableEntry with _$TimetableEntry {
     @JsonKey(name: 'break_label') String? breakLabel,
     @JsonKey(name: 'academic_subjects') SubjectRef? subject,
     @JsonKey(name: 'staff_accounts') TeacherNameRef? teacher,
+    @JsonKey(name: 'classes') ClassRef? classRef,
+    @JsonKey(name: 'sections') SectionRef? sectionRef,
   }) = _TimetableEntry;
 
   factory TimetableEntry.fromJson(Map<String, dynamic> json) => _$TimetableEntryFromJson(json);
