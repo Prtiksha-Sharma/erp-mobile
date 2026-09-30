@@ -15,6 +15,7 @@ class SecureStorage {
   static const _kAccessToken = 'access_token';
   static const _kRefreshToken = 'refresh_token';
   static const _kSchoolId = 'school_id';
+  static const _kPendingPayment = 'pending_payment';
 
   Future<void> setAccessToken(String token) =>
       _storage.write(key: _kAccessToken, value: token);
@@ -36,4 +37,25 @@ class SecureStorage {
   /// Mirrors storage.clearAll() on the web app — call on logout and on
   /// refresh failure.
   Future<void> clearAll() => _storage.deleteAll();
+
+  /// Written right before the in-app payment WebView opens, so a payment
+  /// that completes while the app is killed (or the process dies mid-pay)
+  /// can still be reconciled the next time the app starts — the Fees
+  /// slice's own resume check reads this on ParentHomeScreen's first
+  /// build. Cleared once that payment reaches a terminal Success/Failed
+  /// status. Stored as a single delimited string since flutter_secure_storage
+  /// only holds strings and this is the only place a raw '|' could appear
+  /// is a UUID, which never contains one.
+  Future<void> setPendingPayment({required String studentId, required String merchantOrderId}) =>
+      _storage.write(key: _kPendingPayment, value: '$studentId|$merchantOrderId');
+
+  Future<({String studentId, String merchantOrderId})?> getPendingPayment() async {
+    final raw = await _storage.read(key: _kPendingPayment);
+    if (raw == null) return null;
+    final parts = raw.split('|');
+    if (parts.length != 2) return null;
+    return (studentId: parts[0], merchantOrderId: parts[1]);
+  }
+
+  Future<void> clearPendingPayment() => _storage.delete(key: _kPendingPayment);
 }

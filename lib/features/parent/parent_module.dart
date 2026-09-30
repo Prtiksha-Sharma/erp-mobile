@@ -3,20 +3,31 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/roles/app_role.dart';
 import '../../core/roles/role_module.dart';
-import '../../ui/widgets/coming_soon_screen.dart';
+import 'screens/apply_leave_screen.dart';
+import 'screens/chat_screen.dart';
+import 'screens/fee_plan_screen.dart';
+import 'screens/file_grievance_screen.dart';
+import 'screens/grievance_detail_screen.dart';
 import 'screens/parent_academics_hub_screen.dart';
 import 'screens/parent_attendance_screen.dart';
+import 'screens/parent_fees_screen.dart';
+import 'screens/parent_grievances_screen.dart';
 import 'screens/parent_home_screen.dart';
 import 'screens/parent_homework_screen.dart';
+import 'screens/parent_leaves_screen.dart';
+import 'screens/parent_messages_screen.dart';
+import 'screens/parent_more_hub_screen.dart';
+import 'screens/parent_school_updates_screen.dart';
 import 'screens/parent_teachers_screen.dart';
 import 'screens/parent_timetable_screen.dart';
+import 'screens/parent_transport_screen.dart';
+import 'screens/receipt_detail_screen.dart';
 import 'screens/teacher_profile_screen.dart';
 
-/// P1 scope: Home is real (child switcher + selection). Fees/More are
-/// ComingSoonScreen for now — same convention the web app uses for an
-/// unbuilt route (see ComingSoonPage.jsx). Academics is now a real hub —
-/// Attendance, Homework, Timetable, and Teachers are all built; only
-/// Events/Calendar/Activities remain to finish off P1.
+/// P1/P2/P3 (Fee Plan + Payment) all built. P4 Grievances and Messages are
+/// now both built too — Messages runs on plain REST polling, not Socket.IO
+/// (see messages_service.dart's own comment on why). Parent role is
+/// functionally complete.
 class ParentModule implements RoleModule {
   @override
   AppRole get role => AppRole.parent;
@@ -61,11 +72,76 @@ class ParentModule implements RoleModule {
         ),
         GoRoute(
           path: '/parent/fees',
-          builder: (context, state) => const ComingSoonScreen(title: 'Fees'),
+          builder: (context, state) => const ParentFeesScreen(),
+          routes: [
+            GoRoute(
+              path: 'receipts/:receiptId',
+              builder: (context, state) => ReceiptDetailScreen(
+                studentId: state.extra as String,
+                receiptId: state.pathParameters['receiptId']!,
+              ),
+            ),
+            GoRoute(
+              path: 'fee-plan',
+              builder: (context, state) => const FeePlanScreen(),
+            ),
+          ],
         ),
         GoRoute(
           path: '/parent/more',
-          builder: (context, state) => const ComingSoonScreen(title: 'More'),
+          builder: (context, state) => const ParentMoreHubScreen(),
+          routes: [
+            GoRoute(
+              path: 'school-updates',
+              builder: (context, state) => const ParentSchoolUpdatesScreen(),
+            ),
+            GoRoute(
+              path: 'leaves',
+              builder: (context, state) => const ParentLeavesScreen(),
+              routes: [
+                GoRoute(
+                  path: 'apply',
+                  builder: (context, state) => const ApplyLeaveScreen(),
+                ),
+              ],
+            ),
+            GoRoute(
+              path: 'transport',
+              builder: (context, state) => const ParentTransportScreen(),
+            ),
+            GoRoute(
+              path: 'grievances',
+              builder: (context, state) => const ParentGrievancesScreen(),
+              routes: [
+                GoRoute(
+                  path: 'file',
+                  builder: (context, state) => const FileGrievanceScreen(),
+                ),
+                GoRoute(
+                  path: ':ticketId',
+                  builder: (context, state) =>
+                      GrievanceDetailScreen(ticketId: state.pathParameters['ticketId']!),
+                ),
+              ],
+            ),
+            GoRoute(
+              path: 'messages',
+              builder: (context, state) => const ParentMessagesScreen(),
+              routes: [
+                GoRoute(
+                  path: 'chat',
+                  builder: (context, state) {
+                    final extra = state.extra as ({String? threadId, String? staffId, String? teacherName});
+                    return ChatScreen(
+                      threadId: extra.threadId,
+                      staffId: extra.staffId,
+                      teacherName: extra.teacherName,
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
         ),
       ];
 

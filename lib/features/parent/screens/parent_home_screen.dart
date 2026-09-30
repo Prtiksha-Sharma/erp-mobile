@@ -7,20 +7,50 @@ import '../../../core/error/failure.dart';
 import '../../../core/models/attendance_summary.dart';
 import '../../../core/models/child.dart';
 import '../../../core/models/homework_submission.dart';
+import '../../../core/storage/secure_storage.dart';
 import '../../../ui/widgets/error_view.dart';
 import '../providers/attendance_provider.dart';
 import '../providers/children_provider.dart';
 import '../providers/homework_provider.dart';
+import 'payment_result_screen.dart';
 
 /// No dedicated /parent/dashboard endpoint exists on the backend (confirmed
 /// — see the Parent integration plan) — this composes its stat tiles from
 /// the same Attendance/Homework providers the Academics screens already
 /// use, same pattern the web app's own dashboards follow.
-class ParentHomeScreen extends ConsumerWidget {
+class ParentHomeScreen extends ConsumerStatefulWidget {
   const ParentHomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ParentHomeScreen> createState() => _ParentHomeScreenState();
+}
+
+class _ParentHomeScreenState extends ConsumerState<ParentHomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // A payment whose WebView/app got killed before reaching a terminal
+    // status leaves this marker behind (see SecureStorage.setPendingPayment)
+    // — first thing Home does is offer to finish reconciling it, same
+    // PaymentResultScreen every other payment path already funnels through.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _resumePendingPayment());
+  }
+
+  Future<void> _resumePendingPayment() async {
+    final pending = await SecureStorage.instance.getPendingPayment();
+    if (pending == null || !mounted) return;
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => PaymentResultScreen(
+          studentId: pending.studentId,
+          merchantOrderId: pending.merchantOrderId,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final childrenAsync = ref.watch(childrenListProvider);
     final activeChild = ref.watch(activeChildProvider);
 
