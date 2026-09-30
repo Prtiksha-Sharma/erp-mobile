@@ -24,6 +24,18 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <!-- Handles the PhonePe gateway's redirect back into the app
+                 after a fee payment (edusoft://payment/result?...) — see
+                 lib/features/parent/ payment deep-link handling (app_links
+                 package). Grants no permission, no user-facing prompt;
+                 only tells Android to hand edusoft:// links to this app
+                 instead of failing to open them. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="edusoft"/>
+            </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
