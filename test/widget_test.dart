@@ -16,7 +16,7 @@ void main() {
     await tester.pumpWidget(const ProviderScope(child: MyApp()));
     await tester.pumpAndSettle();
 
-    expect(find.text('Vidyaprabandhan Mobile'), findsOneWidget);
+    expect(find.text('Vidyaprabandhan'), findsOneWidget);
     expect(find.text('Log in'), findsOneWidget);
     expect(find.text('Username or email'), findsOneWidget);
   });

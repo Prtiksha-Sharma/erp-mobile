@@ -64,7 +64,7 @@ class _ParentHomeScreenState extends ConsumerState<ParentHomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Vidyaprabandhan Parent'),
+        title: const Text('Vidyaprabandhan'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
