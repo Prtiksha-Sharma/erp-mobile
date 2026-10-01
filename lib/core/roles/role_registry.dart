@@ -1,3 +1,4 @@
+import '../../features/driver/driver_module.dart';
 import '../../features/parent/parent_module.dart';
 import '../../features/student/student_module.dart';
 import '../../features/teacher/teacher_module.dart';
@@ -13,5 +14,5 @@ final Map<AppRole, RoleModule> roleRegistry = <AppRole, RoleModule>{
   AppRole.parent: ParentModule(),
   AppRole.student: StudentModule(),
   AppRole.teacher: TeacherModule(),
-  // AppRole.driver: DriverModule(),
+  AppRole.driver: DriverModule(),
 };

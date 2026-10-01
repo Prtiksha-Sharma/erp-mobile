@@ -23,7 +23,10 @@ class AppShell extends ConsumerWidget {
     final module = activeRole != null ? roleRegistry[activeRole] : null;
     final tabs = module?.tabs() ?? const [];
 
-    if (tabs.isEmpty) {
+    // NavigationBar/NavigationRail both assert on at least 2 destinations —
+    // a single-screen role (Driver) has nothing to navigate between anyway,
+    // so it gets the same bare-Scaffold treatment as zero tabs.
+    if (tabs.length < 2) {
       return Scaffold(body: child);
     }
 
