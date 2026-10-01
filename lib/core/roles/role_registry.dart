@@ -3,6 +3,7 @@ import '../../features/parent/parent_module.dart';
 import '../../features/principal/principal_module.dart';
 import '../../features/student/student_module.dart';
 import '../../features/teacher/teacher_module.dart';
+import '../../features/vice_principal/vice_principal_module.dart';
 import 'app_role.dart';
 import 'role_module.dart';
 
@@ -17,4 +18,5 @@ final Map<AppRole, RoleModule> roleRegistry = <AppRole, RoleModule>{
   AppRole.teacher: TeacherModule(),
   AppRole.driver: DriverModule(),
   AppRole.principal: PrincipalModule(),
+  AppRole.vicePrincipal: VicePrincipalModule(),
 };
