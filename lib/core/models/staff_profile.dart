@@ -10,6 +10,10 @@ part 'staff_profile.g.dart';
 /// member's own staff_accounts row). Only contact_number, address and
 /// profile_photo_url are self-editable (SELF_EDITABLE_FIELDS there);
 /// employment fields stay School-Admin-owned.
+///
+/// GET/PATCH /principal/profile and POST /principal/profile/photo return the
+/// identical `select` (principal/profile.service.js#getMyProfile), so the
+/// principal portal reuses this model.
 @freezed
 abstract class StaffProfile with _$StaffProfile {
   const factory StaffProfile({

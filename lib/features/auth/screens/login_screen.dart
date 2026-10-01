@@ -46,8 +46,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text(
-                    'Vidyaprabandhan',
+                  const Text.rich(
+                    TextSpan(
+                      text: 'Vidyaprabandhan\n',
+                      children: [
+                        TextSpan(
+                          text: 'Institute Management ERP',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
+                    ),
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
