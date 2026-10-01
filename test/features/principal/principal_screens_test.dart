@@ -155,7 +155,8 @@ Future<void> _pump(WidgetTester tester, Widget screen, Size size, {List<Override
 void main() {
   test('the backend "Principal" role maps to the principal module', () {
     expect(AppRole.fromBackendName('Principal'), AppRole.principal);
-    expect(AppRole.fromBackendName('Vice Principal'), isNull);
+    // Vice Principal has its own module now (see vice_principal_screens_test.dart).
+    expect(AppRole.fromBackendName('Vice Principal'), AppRole.vicePrincipal);
   });
 
   for (final size in _sizes.entries) {

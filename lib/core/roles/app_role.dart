@@ -12,7 +12,8 @@ enum AppRole {
   student,
   teacher,
   driver,
-  principal;
+  principal,
+  vicePrincipal;
 
   /// Matches the RAW role_name strings the backend JWT actually carries —
   /// Title Case, verified directly against auth.service.js#getUserRoles
@@ -39,9 +40,11 @@ enum AppRole {
         return AppRole.driver;
       case 'Principal':
         return AppRole.principal;
+      case 'Vice Principal':
+        return AppRole.vicePrincipal;
       default:
-        // Not an error — e.g. School Admin, Vice Principal, Accountant are real
-        // backend roles with no mobile module yet. See RoleModule doc.
+        // Not an error — e.g. School Admin, Accountant are real backend
+        // roles with no mobile module yet. See RoleModule doc.
         return null;
     }
   }
