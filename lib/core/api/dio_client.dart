@@ -19,7 +19,7 @@ import '../storage/secure_storage.dart';
 /// explicitly provided.
 const _apiBaseUrl = String.fromEnvironment(
   'API_BASE_URL',
-  defaultValue: 'http://localhost:5050/api',
+  defaultValue: 'http://localhost:5000/api',
 );
 
 /// Mirrors apps/school/src/lib/axios.js on the web frontend: injects the
