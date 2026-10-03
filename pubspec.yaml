@@ -126,10 +126,28 @@ flutter_launcher_icons:
   image_path: "assets/branding/icon_master.png"
   remove_alpha_ios: true
   background_color_ios: "#FFFFFF"
-  # Android 8+ adaptive icon. The foreground is padded into the 66% safe zone
-  # so the launcher's circle/squircle mask never clips the logo.
+  # Android 8+ adaptive icon.
+  #
+  # icon_foreground.png is FULL-BLEED — the rounded-square frame runs to the
+  # edge of its 1024x1024 canvas (measured content bbox: 1014x1009). An
+  # adaptive foreground is a 108dp canvas of which launchers only ever show
+  # the centre: a round mask reveals a 72dp circle, and only the inner 66dp
+  # circle is guaranteed visible on every mask. So the artwork has to be
+  # inset here or the mask slices its corners off.
+  #
+  # The inset is NOT optional and NOT zero by default — leaving it unset
+  # falls back to 16%, which leaves the frame 54dp wide with its corners
+  # 34.4dp from centre, outside the 33dp safe radius. That is what clipped
+  # the four corners on-device.
+  #
+  # 27% is the largest whole-percent inset that fits: it puts the frame at
+  # 49.7dp wide with its outermost corner 31.6dp from centre, inside the
+  # 33dp guaranteed-visible radius, so nothing clips on a circle, squircle
+  # or rounded-square mask. Raising it shrinks the logo for no benefit;
+  # lowering it starts clipping corners again (26% lands exactly on 33.0dp).
   adaptive_icon_background: "#FFFFFF"
   adaptive_icon_foreground: "assets/branding/icon_foreground.png"
+  adaptive_icon_foreground_inset: 27
   min_sdk_android: 21
 
 # Splash screen generation. Regenerate after changing assets/branding/ with:
