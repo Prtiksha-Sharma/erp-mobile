@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/auth/auth_provider.dart';
 import '../../../ui/theme/app_colors.dart';
 import '../../../ui/widgets/responsive.dart';
 import '../../../ui/widgets/status_badge.dart';
 import '../providers/teacher_portal_providers.dart';
+import 'teacher_page_scaffold.dart';
 
 /// One destination on a hub screen — the mobile stand-in for the web's
 /// TEACHER_NAV sidebar entries (shared/constants/sidebarNav.js). The web
@@ -78,51 +78,26 @@ class TeacherAcademicsHubScreen extends StatelessWidget {
   Widget build(BuildContext context) => const _HubScaffold(title: 'Academics', entries: _academicsEntries);
 }
 
-class TeacherMoreHubScreen extends ConsumerWidget {
+/// Sign Out and Change Password now live in the shared drawer-shell's
+/// account menu (top bar), not here — see teacher_page_scaffold.dart.
+class TeacherMoreHubScreen extends StatelessWidget {
   const TeacherMoreHubScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final scheme = Theme.of(context).colorScheme;
-    return _HubScaffold(
-      title: 'More',
-      entries: _moreEntries,
-      footer: [
-        const SizedBox(height: 20),
-        Text('Account', style: Theme.of(context).textTheme.titleSmall),
-        const SizedBox(height: 8),
-        Card(
-          elevation: 0,
-          margin: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-            side: BorderSide(color: scheme.outlineVariant.withValues(alpha: 0.6)),
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: ListTile(
-            leading: Icon(Icons.logout, color: scheme.error),
-            title: Text('Log out', style: TextStyle(color: scheme.error)),
-            onTap: () => ref.read(authProvider.notifier).logout(),
-          ),
-        ),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => const _HubScaffold(title: 'More', entries: _moreEntries);
 }
 
 class _HubScaffold extends ConsumerWidget {
-  const _HubScaffold({required this.title, required this.entries, this.footer = const []});
+  const _HubScaffold({required this.title, required this.entries});
 
   final String title;
   final List<_HubEntry> entries;
-  final List<Widget> footer;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isClassTeacher = ref.watch(isClassTeacherProvider);
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      appBar: AppBar(title: Text(title)),
+    return TeacherPageScaffold(
+      title: title,
       body: ResponsiveListView(
         children: [
           // 1 column on narrow phones, 2 on large phones / portrait
@@ -134,7 +109,6 @@ class _HubScaffold extends ConsumerWidget {
               for (final e in entries) _HubCard(entry: e, showClassTeacherBadge: e.classTeacherOnly && !isClassTeacher),
             ],
           ),
-          ...footer,
         ],
       ),
     );

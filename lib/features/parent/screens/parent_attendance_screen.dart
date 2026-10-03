@@ -8,6 +8,7 @@ import '../../../core/models/attendance_summary.dart';
 import '../../../ui/widgets/error_view.dart';
 import '../providers/attendance_provider.dart';
 import '../providers/children_provider.dart' show activeChildProvider;
+import 'parent_page_scaffold.dart';
 
 class ParentAttendanceScreen extends ConsumerStatefulWidget {
   const ParentAttendanceScreen({super.key});
@@ -24,18 +25,17 @@ class _ParentAttendanceScreenState extends ConsumerState<ParentAttendanceScreen>
     final activeChild = ref.watch(activeChildProvider);
 
     if (activeChild == null) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('Attendance')),
-        body: const Center(child: Text('Select a child from Home first.')),
+      return const ParentPageScaffold(
+        title: 'Attendance',
+        body: Center(child: Text('Select a child from Home first.')),
       );
     }
 
     final params = (studentId: activeChild.studentId, period: _period);
     final summaryAsync = ref.watch(attendanceProvider(params));
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      appBar: AppBar(title: const Text('Attendance')),
+    return ParentPageScaffold(
+      title: 'Attendance',
       body: Column(
         children: [
           Padding(

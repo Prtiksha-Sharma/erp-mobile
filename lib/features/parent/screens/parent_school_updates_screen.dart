@@ -7,6 +7,7 @@ import '../../../core/models/child.dart';
 import '../../../ui/widgets/error_view.dart';
 import '../providers/children_provider.dart' show activeChildProvider;
 import '../providers/school_updates_provider.dart';
+import 'parent_page_scaffold.dart';
 
 class ParentSchoolUpdatesScreen extends StatefulWidget {
   const ParentSchoolUpdatesScreen({super.key});
@@ -33,14 +34,11 @@ class _ParentSchoolUpdatesScreenState extends State<ParentSchoolUpdatesScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      appBar: AppBar(
-        title: const Text('School Updates'),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [Tab(text: 'Events'), Tab(text: 'Calendar'), Tab(text: 'Activities')],
-        ),
+    return ParentPageScaffold(
+      title: 'School Updates',
+      bottom: TabBar(
+        controller: _tabController,
+        tabs: const [Tab(text: 'Events'), Tab(text: 'Calendar'), Tab(text: 'Activities')],
       ),
       body: TabBarView(
         controller: _tabController,

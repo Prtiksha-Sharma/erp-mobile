@@ -8,6 +8,7 @@ import '../../../core/models/grievance_ticket.dart';
 import '../providers/children_provider.dart';
 import '../providers/grievances_provider.dart';
 import '../services/grievances_service.dart';
+import 'parent_page_scaffold.dart';
 
 /// Same shape as ApplyLeaveScreen — screen-local state, no dedicated
 /// Riverpod Notifier, for the same reason (a one-off write nothing else
@@ -74,8 +75,8 @@ class _FileGrievanceScreenState extends ConsumerState<FileGrievanceScreen> {
   Widget build(BuildContext context) {
     final childrenAsync = ref.watch(childrenListProvider);
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('File a Grievance')),
+    return ParentPageScaffold(
+      title: 'File a Grievance',
       body: Form(
         key: _formKey,
         child: ListView(

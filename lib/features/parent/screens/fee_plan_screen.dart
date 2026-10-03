@@ -14,6 +14,7 @@ import '../providers/fees_provider.dart';
 import '../services/fee_plan_service.dart';
 import '../services/payments_service.dart';
 import '../utils/launch_payment.dart';
+import 'parent_page_scaffold.dart';
 
 const _frequencies = ['MONTHLY', 'QUARTERLY', 'HALF_YEARLY', 'YEARLY'];
 
@@ -38,9 +39,9 @@ class FeePlanScreen extends ConsumerWidget {
     final activeChild = ref.watch(activeChildProvider);
 
     if (activeChild == null) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('Fee Payment Plans')),
-        body: const Center(child: Text('Select a child from Home first.')),
+      return const ParentPageScaffold(
+        title: 'Fee Payment Plans',
+        body: Center(child: Text('Select a child from Home first.')),
       );
     }
 
@@ -48,9 +49,8 @@ class FeePlanScreen extends ConsumerWidget {
     final plansAsync = ref.watch(feePlansProvider(studentId));
     final summaryAsync = ref.watch(feeSummaryProvider(studentId));
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      appBar: AppBar(title: const Text('Fee Payment Plans')),
+    return ParentPageScaffold(
+      title: 'Fee Payment Plans',
       body: plansAsync.when(
         data: (plans) => summaryAsync.when(
           data: (summary) => _FeePlanBody(

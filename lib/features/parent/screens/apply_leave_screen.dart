@@ -8,6 +8,7 @@ import '../../../core/models/leave_record.dart';
 import '../providers/children_provider.dart' show activeChildProvider;
 import '../providers/leaves_provider.dart';
 import '../services/leaves_service.dart';
+import 'parent_page_scaffold.dart';
 
 /// The first write anywhere in the Parent app. Deliberately kept as
 /// screen-local state (ConsumerStatefulWidget), not a dedicated
@@ -102,8 +103,8 @@ class _ApplyLeaveScreenState extends ConsumerState<ApplyLeaveScreen> {
   Widget build(BuildContext context) {
     final dateFormat = DateFormat('d MMM yyyy');
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Apply for Leave')),
+    return ParentPageScaffold(
+      title: 'Apply for Leave',
       body: Form(
         key: _formKey,
         child: ListView(

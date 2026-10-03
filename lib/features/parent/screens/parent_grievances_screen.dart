@@ -7,6 +7,7 @@ import '../../../core/error/failure.dart';
 import '../../../core/models/grievance_ticket.dart';
 import '../../../ui/widgets/error_view.dart';
 import '../providers/grievances_provider.dart';
+import 'parent_page_scaffold.dart';
 
 class ParentGrievancesScreen extends ConsumerWidget {
   const ParentGrievancesScreen({super.key});
@@ -15,9 +16,8 @@ class ParentGrievancesScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ticketsAsync = ref.watch(grievancesListProvider);
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      appBar: AppBar(title: const Text('Grievances')),
+    return ParentPageScaffold(
+      title: 'Grievances',
       body: ticketsAsync.when(
         data: (tickets) => _TicketsList(tickets: tickets),
         loading: () => const Center(child: CircularProgressIndicator()),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'parent_page_scaffold.dart';
+
 /// Simple menu now that Academics has more than one real screen behind it
 /// (Attendance, Homework). Timetable/Teachers stay listed but disabled
 /// until their own slices land — same "visible but not yet built" pattern
@@ -10,8 +12,8 @@ class ParentAcademicsHubScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Academics')),
+    return ParentPageScaffold(
+      title: 'Academics',
       body: ListView(
         children: [
           ListTile(

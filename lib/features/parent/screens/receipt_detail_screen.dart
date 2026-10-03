@@ -7,6 +7,7 @@ import '../../../core/models/fee_summary.dart';
 import '../../../core/utils/currency_format.dart';
 import '../../../ui/widgets/error_view.dart';
 import '../providers/fees_provider.dart';
+import 'parent_page_scaffold.dart';
 
 class ReceiptDetailScreen extends ConsumerWidget {
   const ReceiptDetailScreen({super.key, required this.studentId, required this.receiptId});
@@ -18,9 +19,8 @@ class ReceiptDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final receiptAsync = ref.watch(receiptDetailProvider((studentId: studentId, receiptId: receiptId)));
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      appBar: AppBar(title: const Text('Receipt')),
+    return ParentPageScaffold(
+      title: 'Receipt',
       body: receiptAsync.when(
         data: (receipt) => _ReceiptView(receipt: receipt),
         loading: () => const Center(child: CircularProgressIndicator()),

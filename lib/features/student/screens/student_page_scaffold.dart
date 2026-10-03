@@ -1,33 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../core/auth/auth_provider.dart';
+import '../../../core/models/student_profile.dart';
+import '../../../core/roles/app_role.dart';
+import '../../../ui/widgets/app_shell/app_page_scaffold.dart';
 import '../../../ui/widgets/status_badge.dart';
+import '../providers/student_portal_providers.dart';
+import 'student_change_password_sheet.dart';
+import 'student_nav.dart';
 
-/// The frame every student sub-page shares: app bar + the web page's
-/// one-line description under it. Keeps page chrome identical across the
-/// 12 portal screens without each one re-declaring it.
-class StudentPageScaffold extends StatelessWidget {
+/// The frame every student page shares: the drawer-shell [AppPageScaffold]
+/// (gradient app bar, left drawer, notifications, account menu), same as
+/// Principal/Vice Principal. Every student screen builds on this instead of
+/// its own `Scaffold`.
+class StudentPageScaffold extends ConsumerWidget {
   const StudentPageScaffold({
     super.key,
     required this.title,
     required this.body,
-    this.actions,
     this.bottom,
     this.floatingActionButton,
   });
 
   final String title;
   final Widget body;
-  final List<Widget>? actions;
   final PreferredSizeWidget? bottom;
   final Widget? floatingActionButton;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      appBar: AppBar(title: Text(title), actions: actions, bottom: bottom),
-      floatingActionButton: floatingActionButton,
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authProvider).user;
+    final profile = ref.watch(myProfileProvider).value;
+    final displayName = profile?.fullName ?? user?.fullName ?? 'Student';
+
+    return AppPageScaffold(
+      role: AppRole.student,
+      title: title,
       body: body,
+      sections: studentNavSections,
+      roleLabel: 'Student',
+      schoolName: profile?.institutionName,
+      accountName: displayName,
+      accountEmail: user?.email,
+      accountUsername: user?.username,
+      accountPhotoUrl: profile?.applicant?.photoUrl,
+      onProfile: () => context.go('/student/more/profile'),
+      onChangePassword: () => showChangePasswordSheet(context),
+      onSignOut: () => ref.read(authProvider.notifier).logout(),
+      bottom: bottom,
+      floatingActionButton: floatingActionButton,
     );
   }
 }

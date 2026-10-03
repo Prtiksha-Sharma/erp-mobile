@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/auth/auth_provider.dart';
 import '../../../core/error/failure.dart';
 import '../../../core/models/attendance_summary.dart';
 import '../../../core/models/child.dart';
@@ -12,6 +11,7 @@ import '../../../ui/widgets/error_view.dart';
 import '../providers/attendance_provider.dart';
 import '../providers/children_provider.dart';
 import '../providers/homework_provider.dart';
+import 'parent_page_scaffold.dart';
 import 'payment_result_screen.dart';
 
 /// No dedicated /parent/dashboard endpoint exists on the backend (confirmed
@@ -62,17 +62,8 @@ class _ParentHomeScreenState extends ConsumerState<ParentHomeScreen> {
       });
     });
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Vidyaprabandhan'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Log out',
-            onPressed: () => ref.read(authProvider.notifier).logout(),
-          ),
-        ],
-      ),
+    return ParentPageScaffold(
+      title: 'Dashboard',
       body: childrenAsync.when(
         data: (children) => _HomeBody(children: children, activeChild: activeChild),
         loading: () => const Center(child: CircularProgressIndicator()),

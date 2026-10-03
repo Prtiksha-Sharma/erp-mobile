@@ -6,6 +6,7 @@ import '../../../core/models/timetable_entry.dart';
 import '../../../ui/widgets/error_view.dart';
 import '../providers/children_provider.dart' show activeChildProvider;
 import '../providers/timetable_provider.dart';
+import 'parent_page_scaffold.dart';
 
 /// A 7-column grid doesn't fit a phone screen usefully — day selector +
 /// vertical period list matches the Attendance screen's own selector+list
@@ -27,17 +28,16 @@ class _ParentTimetableScreenState extends ConsumerState<ParentTimetableScreen> {
     final activeChild = ref.watch(activeChildProvider);
 
     if (activeChild == null) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('Timetable')),
-        body: const Center(child: Text('Select a child from Home first.')),
+      return const ParentPageScaffold(
+        title: 'Timetable',
+        body: Center(child: Text('Select a child from Home first.')),
       );
     }
 
     final entriesAsync = ref.watch(timetableProvider(activeChild.studentId));
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      appBar: AppBar(title: const Text('Timetable')),
+    return ParentPageScaffold(
+      title: 'Timetable',
       body: entriesAsync.when(
         data: (entries) => _TimetableView(
           entries: entries,

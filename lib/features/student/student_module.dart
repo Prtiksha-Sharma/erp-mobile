@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/roles/app_role.dart';
@@ -67,11 +66,9 @@ class StudentModule implements RoleModule {
         ),
       ];
 
+  // No bottom tabs: like Principal/Vice Principal, navigation is the left
+  // drawer (studentNavSections, screens/student_nav.dart). With fewer than
+  // two tabs AppShell renders a bare Scaffold.
   @override
-  List<NavTab> tabs() => const [
-        NavTab(label: 'Home', icon: Icons.home_outlined, path: '/student/home', moduleKey: 'dashboard'),
-        NavTab(label: 'Academics', icon: Icons.menu_book_outlined, path: '/student/academics', moduleKey: 'academics'),
-        NavTab(label: 'Fees', icon: Icons.payments_outlined, path: '/student/fees', moduleKey: 'fees'),
-        NavTab(label: 'More', icon: Icons.more_horiz, path: '/student/more', moduleKey: 'more'),
-      ];
+  List<NavTab> tabs() => const [];
 }

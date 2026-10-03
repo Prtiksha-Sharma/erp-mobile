@@ -8,6 +8,7 @@ import '../../../core/models/grievance_ticket.dart';
 import '../../../ui/widgets/error_view.dart';
 import '../providers/grievances_provider.dart';
 import '../services/grievances_service.dart';
+import 'parent_page_scaffold.dart';
 
 class GrievanceDetailScreen extends ConsumerWidget {
   const GrievanceDetailScreen({super.key, required this.ticketId});
@@ -18,9 +19,8 @@ class GrievanceDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ticketAsync = ref.watch(grievanceDetailProvider(ticketId));
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      appBar: AppBar(title: const Text('Grievance')),
+    return ParentPageScaffold(
+      title: 'Grievance',
       body: ticketAsync.when(
         data: (ticket) => _TicketDetailView(ticket: ticket),
         loading: () => const Center(child: CircularProgressIndicator()),

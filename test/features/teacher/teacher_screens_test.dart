@@ -8,7 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 
+import 'package:edusoft_mobile/core/models/app_notification.dart';
 import 'package:edusoft_mobile/core/models/message_thread.dart';
 import 'package:edusoft_mobile/core/models/school_feed.dart';
 import 'package:edusoft_mobile/core/models/staff_profile.dart';
@@ -37,6 +39,9 @@ import 'package:edusoft_mobile/features/teacher/screens/teacher_subjects_screen.
 import 'package:edusoft_mobile/features/teacher/screens/teacher_syllabus_screen.dart';
 import 'package:edusoft_mobile/features/teacher/screens/teacher_timetable_screen.dart';
 import 'package:edusoft_mobile/features/teacher/services/teacher_portal_service.dart';
+import 'package:edusoft_mobile/features/teacher/teacher_module.dart';
+import 'package:edusoft_mobile/core/roles/app_role.dart';
+import 'package:edusoft_mobile/core/shell/shell_notifications_provider.dart';
 
 // ── Fixtures (same shapes as the backend; see teacher_portal_models_test) ──
 
@@ -380,6 +385,8 @@ List<Override> _overrides({required bool classTeacher}) => [
       parentPresenceProvider.overrideWith(
         (ref, id) async => ParentPresence.fromJson({'isOnline': false, 'lastActiveAt': _day(0)}),
       ),
+      shellNotificationsProvider(AppRole.teacher)
+          .overrideWith((ref) async => const NotificationInbox(notifications: [], unreadCount: 0)),
     ];
 
 const _sizes = {
@@ -422,7 +429,14 @@ Future<void> _pump(WidgetTester tester, Widget screen, Size size, {bool classTea
   await tester.pumpWidget(
     ProviderScope(
       overrides: _overrides(classTeacher: classTeacher),
-      child: MaterialApp(home: screen),
+      // A real router (the drawer reads the current route): the screen
+      // under test at '/', plus the module's own routes so drawer taps
+      // navigate — same pattern as the Principal/Vice Principal tests.
+      child: MaterialApp.router(
+        routerConfig: GoRouter(
+          routes: [GoRoute(path: '/', builder: (_, _) => screen), ...TeacherModule().routes()],
+        ),
+      ),
     ),
   );
   await tester.pumpAndSettle();

@@ -13,6 +13,7 @@ import '../providers/children_provider.dart' show activeChildProvider;
 import '../providers/fees_provider.dart';
 import '../services/payments_service.dart';
 import '../utils/launch_payment.dart';
+import 'parent_page_scaffold.dart';
 
 class ParentFeesScreen extends ConsumerWidget {
   const ParentFeesScreen({super.key});
@@ -22,26 +23,23 @@ class ParentFeesScreen extends ConsumerWidget {
     final activeChild = ref.watch(activeChildProvider);
 
     if (activeChild == null) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('Fees')),
-        body: const Center(child: Text('Select a child from Home first.')),
+      return const ParentPageScaffold(
+        title: 'Fees',
+        body: Center(child: Text('Select a child from Home first.')),
       );
     }
 
     final summaryAsync = ref.watch(feeSummaryProvider(activeChild.studentId));
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      appBar: AppBar(
-        title: const Text('Fees'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.calendar_month_outlined),
-            tooltip: 'Fee Payment Plans',
-            onPressed: () => context.push('/parent/fees/fee-plan'),
-          ),
-        ],
-      ),
+    return ParentPageScaffold(
+      title: 'Fees',
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.calendar_month_outlined),
+          tooltip: 'Fee Payment Plans',
+          onPressed: () => context.push('/parent/fees/fee-plan'),
+        ),
+      ],
       body: summaryAsync.when(
         data: (summary) => _FeeSummaryView(summary: summary, studentId: activeChild.studentId),
         loading: () => const Center(child: CircularProgressIndicator()),

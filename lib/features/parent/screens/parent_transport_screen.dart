@@ -6,6 +6,7 @@ import '../../../core/models/transport_info.dart';
 import '../../../ui/widgets/error_view.dart';
 import '../providers/children_provider.dart' show activeChildProvider;
 import '../providers/transport_provider.dart';
+import 'parent_page_scaffold.dart';
 
 class ParentTransportScreen extends ConsumerWidget {
   const ParentTransportScreen({super.key});
@@ -15,17 +16,16 @@ class ParentTransportScreen extends ConsumerWidget {
     final activeChild = ref.watch(activeChildProvider);
 
     if (activeChild == null) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('Transport')),
-        body: const Center(child: Text('Select a child from Home first.')),
+      return const ParentPageScaffold(
+        title: 'Transport',
+        body: Center(child: Text('Select a child from Home first.')),
       );
     }
 
     final transportAsync = ref.watch(transportProvider(activeChild.studentId));
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      appBar: AppBar(title: const Text('Transport')),
+    return ParentPageScaffold(
+      title: 'Transport',
       body: transportAsync.when(
         data: (info) => info == null
             ? const _NoTransportAssigned()

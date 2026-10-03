@@ -7,6 +7,7 @@ import '../../../core/models/teacher_summary.dart';
 import '../../../ui/widgets/error_view.dart';
 import '../providers/children_provider.dart' show activeChildProvider;
 import '../providers/teachers_provider.dart';
+import 'parent_page_scaffold.dart';
 
 class ParentTeachersScreen extends ConsumerWidget {
   const ParentTeachersScreen({super.key});
@@ -16,17 +17,16 @@ class ParentTeachersScreen extends ConsumerWidget {
     final activeChild = ref.watch(activeChildProvider);
 
     if (activeChild == null) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('Teachers')),
-        body: const Center(child: Text('Select a child from Home first.')),
+      return const ParentPageScaffold(
+        title: 'Teachers',
+        body: Center(child: Text('Select a child from Home first.')),
       );
     }
 
     final teachersAsync = ref.watch(childTeachersProvider(activeChild.studentId));
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      appBar: AppBar(title: const Text('Teachers')),
+    return ParentPageScaffold(
+      title: 'Teachers',
       body: teachersAsync.when(
         data: (data) => _TeachersList(data: data),
         loading: () => const Center(child: CircularProgressIndicator()),

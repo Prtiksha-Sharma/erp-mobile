@@ -11,6 +11,7 @@ import '../../../ui/widgets/error_view.dart';
 import '../providers/children_provider.dart' show activeChildProvider;
 import '../providers/messages_provider.dart';
 import '../services/messages_service.dart';
+import 'parent_page_scaffold.dart';
 
 /// Either an existing [threadId] (open it, poll it) or a brand-new
 /// conversation identified only by [staffId] + [teacherName] — the first
@@ -124,8 +125,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final title = widget.teacherName ?? 'Chat';
     final threadId = _threadId;
 
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
+    return ParentPageScaffold(
+      title: title,
       body: Column(
         children: [
           Expanded(
