@@ -15,6 +15,7 @@ import '../../../ui/widgets/stat_tile.dart';
 import '../providers/student_portal_providers.dart';
 import 'student_documents_screen.dart' show DocumentRow;
 import 'student_id_card_visual.dart';
+import 'student_page_scaffold.dart';
 
 /// Port of StudentDashboardPage.jsx — welcome banner, 4 stat tiles
 /// (documents total / verified / pending, class), Quick Access, Recent
@@ -35,18 +36,8 @@ class StudentHomeScreen extends ConsumerWidget {
     final docsLoading = documents.isLoading && !documents.hasValue;
     final verified = docs.where((d) => d.verificationStatus == 'VERIFIED').length;
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      appBar: AppBar(
-        title: const Text('Vidyaprabandhan'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Log out',
-            onPressed: () => ref.read(authProvider.notifier).logout(),
-          ),
-        ],
-      ),
+    return StudentPageScaffold(
+      title: 'Dashboard',
       body: ResponsiveListView(
         onRefresh: () async {
           ref

@@ -2,40 +2,63 @@ import 'dart:math' as math;
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../core/auth/auth_provider.dart';
+import '../../../core/roles/app_role.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../ui/theme/app_colors.dart';
+import '../../../ui/widgets/app_shell/app_change_password_sheet.dart';
+import '../../../ui/widgets/app_shell/app_page_scaffold.dart';
 import '../../../ui/widgets/empty_state.dart';
 import '../../../ui/widgets/responsive.dart';
 import '../../../ui/widgets/section_card.dart';
 import '../../../ui/widgets/status_badge.dart';
+import '../providers/teacher_portal_providers.dart';
 import '../services/teacher_portal_service.dart' show UploadFile;
+import 'teacher_nav.dart';
 
-/// The frame every teacher sub-page shares — app bar + body on the portal's
-/// light page background (same as the student portal's page frame).
-class TeacherPageScaffold extends StatelessWidget {
+/// The frame every teacher page shares: the drawer-shell [AppPageScaffold]
+/// (gradient app bar, left drawer, notifications, account menu), same as
+/// Principal/Vice Principal. Every teacher screen builds on this instead of
+/// its own `Scaffold`.
+class TeacherPageScaffold extends ConsumerWidget {
   const TeacherPageScaffold({
     super.key,
     required this.title,
     required this.body,
-    this.actions,
     this.bottom,
     this.floatingActionButton,
   });
 
   final String title;
   final Widget body;
-  final List<Widget>? actions;
   final PreferredSizeWidget? bottom;
   final Widget? floatingActionButton;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      appBar: AppBar(title: Text(title), actions: actions, bottom: bottom),
-      floatingActionButton: floatingActionButton,
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authProvider).user;
+    final profile = ref.watch(teacherProfileProvider).value;
+    final displayName = profile?.fullName ?? user?.fullName ?? 'Teacher';
+
+    return AppPageScaffold(
+      role: AppRole.teacher,
+      title: title,
       body: body,
+      sections: teacherNavSections,
+      roleLabel: 'Teacher',
+      schoolName: profile?.institution?.institutionName,
+      accountName: displayName,
+      accountEmail: user?.email,
+      accountUsername: user?.username,
+      accountPhotoUrl: profile?.profilePhotoUrl,
+      onProfile: () => context.go('/teacher/more/profile'),
+      onChangePassword: () => showAppChangePasswordSheet(context),
+      onSignOut: () => ref.read(authProvider.notifier).logout(),
+      bottom: bottom,
+      floatingActionButton: floatingActionButton,
     );
   }
 }

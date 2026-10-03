@@ -8,6 +8,7 @@ import '../../../core/models/leave_record.dart';
 import '../../../ui/widgets/error_view.dart';
 import '../providers/children_provider.dart' show activeChildProvider;
 import '../providers/leaves_provider.dart';
+import 'parent_page_scaffold.dart';
 
 class ParentLeavesScreen extends ConsumerWidget {
   const ParentLeavesScreen({super.key});
@@ -17,17 +18,16 @@ class ParentLeavesScreen extends ConsumerWidget {
     final activeChild = ref.watch(activeChildProvider);
 
     if (activeChild == null) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('Leaves')),
-        body: const Center(child: Text('Select a child from Home first.')),
+      return const ParentPageScaffold(
+        title: 'Leaves',
+        body: Center(child: Text('Select a child from Home first.')),
       );
     }
 
     final leavesAsync = ref.watch(leavesProvider(activeChild.studentId));
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      appBar: AppBar(title: const Text('Leaves')),
+    return ParentPageScaffold(
+      title: 'Leaves',
       body: leavesAsync.when(
         data: (leaves) => _LeavesList(leaves: leaves),
         loading: () => const Center(child: CircularProgressIndicator()),

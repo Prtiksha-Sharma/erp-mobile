@@ -6,6 +6,7 @@ import '../../../core/error/failure.dart';
 import '../../../core/models/teacher_profile.dart';
 import '../../../ui/widgets/error_view.dart';
 import '../providers/teachers_provider.dart';
+import 'parent_page_scaffold.dart';
 
 class TeacherProfileScreen extends ConsumerWidget {
   const TeacherProfileScreen({super.key, required this.staffId});
@@ -16,9 +17,8 @@ class TeacherProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final profileAsync = ref.watch(teacherProfileProvider(staffId));
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      appBar: AppBar(title: const Text('Teacher Profile')),
+    return ParentPageScaffold(
+      title: 'Teacher Profile',
       body: profileAsync.when(
         data: (profile) => _ProfileView(profile: profile),
         loading: () => const Center(child: CircularProgressIndicator()),

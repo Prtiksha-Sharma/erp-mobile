@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'parent_page_scaffold.dart';
+
 /// Same hub convention as Academics — replaces the plain ComingSoonScreen
 /// now that "More" has real content. Leaves/Transport/Grievances/Messages
 /// stay disabled entries until their own slices land (P2–P4).
@@ -9,8 +11,8 @@ class ParentMoreHubScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('More')),
+    return ParentPageScaffold(
+      title: 'More',
       body: ListView(
         children: [
           ListTile(

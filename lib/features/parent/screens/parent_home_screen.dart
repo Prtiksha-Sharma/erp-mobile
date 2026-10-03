@@ -12,6 +12,7 @@ import '../../../ui/widgets/error_view.dart';
 import '../providers/attendance_provider.dart';
 import '../providers/children_provider.dart';
 import '../providers/homework_provider.dart';
+import 'parent_page_scaffold.dart';
 import 'payment_result_screen.dart';
 
 /// No dedicated /parent/dashboard endpoint exists on the backend (confirmed

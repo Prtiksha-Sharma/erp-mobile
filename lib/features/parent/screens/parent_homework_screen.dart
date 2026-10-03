@@ -7,6 +7,7 @@ import '../../../core/models/homework_submission.dart';
 import '../../../ui/widgets/error_view.dart';
 import '../providers/children_provider.dart' show activeChildProvider;
 import '../providers/homework_provider.dart';
+import 'parent_page_scaffold.dart';
 
 class ParentHomeworkScreen extends ConsumerStatefulWidget {
   const ParentHomeworkScreen({super.key});
@@ -36,9 +37,9 @@ class _ParentHomeworkScreenState extends ConsumerState<ParentHomeworkScreen>
     final activeChild = ref.watch(activeChildProvider);
 
     if (activeChild == null) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('Homework')),
-        body: const Center(child: Text('Select a child from Home first.')),
+      return const ParentPageScaffold(
+        title: 'Homework',
+        body: Center(child: Text('Select a child from Home first.')),
       );
     }
 
@@ -46,14 +47,11 @@ class _ParentHomeworkScreenState extends ConsumerState<ParentHomeworkScreen>
     final homeworkAsync = ref.watch(homeworkProvider(studentId));
     final assignmentsAsync = ref.watch(assignmentsProvider(studentId));
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      appBar: AppBar(
-        title: const Text('Homework'),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [Tab(text: 'Homework'), Tab(text: 'Assignments')],
-        ),
+    return ParentPageScaffold(
+      title: 'Homework',
+      bottom: TabBar(
+        controller: _tabController,
+        tabs: const [Tab(text: 'Homework'), Tab(text: 'Assignments')],
       ),
       body: TabBarView(
         controller: _tabController,

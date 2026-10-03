@@ -7,6 +7,7 @@ import '../../../core/error/failure.dart';
 import '../../../core/models/message.dart';
 import '../../../ui/widgets/error_view.dart';
 import '../providers/messages_provider.dart';
+import 'parent_page_scaffold.dart';
 
 /// One row per teacher, contact-list style (matches the web app's
 /// MessagesInboxPage exactly — see its own row-merge comment) — a teacher
@@ -28,9 +29,8 @@ class _ParentMessagesScreenState extends ConsumerState<ParentMessagesScreen> {
     final teachersAsync = ref.watch(teachersProvider);
     final threadsAsync = ref.watch(threadsProvider);
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      appBar: AppBar(title: const Text('Messages')),
+    return ParentPageScaffold(
+      title: 'Messages',
       body: Column(
         children: [
           Padding(

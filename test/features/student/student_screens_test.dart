@@ -6,7 +6,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 
+import 'package:edusoft_mobile/core/models/app_notification.dart';
 import 'package:edusoft_mobile/core/models/attendance_summary.dart';
 import 'package:edusoft_mobile/core/models/homework_submission.dart';
 import 'package:edusoft_mobile/core/models/student_certificates.dart';
@@ -15,7 +17,10 @@ import 'package:edusoft_mobile/core/models/student_fees.dart';
 import 'package:edusoft_mobile/core/models/student_profile.dart';
 import 'package:edusoft_mobile/core/models/student_records.dart';
 import 'package:edusoft_mobile/core/models/timetable_entry.dart';
+import 'package:edusoft_mobile/core/roles/app_role.dart';
+import 'package:edusoft_mobile/core/shell/shell_notifications_provider.dart';
 import 'package:edusoft_mobile/features/student/providers/student_portal_providers.dart';
+import 'package:edusoft_mobile/features/student/student_module.dart';
 import 'package:edusoft_mobile/features/student/screens/student_attendance_screen.dart';
 import 'package:edusoft_mobile/features/student/screens/student_certificates_screen.dart';
 import 'package:edusoft_mobile/features/student/screens/student_discipline_screen.dart';
@@ -297,6 +302,8 @@ final _overrides = [
   myReceiptDetailProvider.overrideWith((ref, id) async => _receipts.first),
   myPendingDuesProvider.overrideWith((ref) async => _pendingDues),
   myFeePlansProvider.overrideWith((ref) async => _feePlans),
+  shellNotificationsProvider(AppRole.student)
+      .overrideWith((ref) async => const NotificationInbox(notifications: [], unreadCount: 0)),
 ];
 
 const _sizes = {
@@ -330,7 +337,14 @@ Future<void> _pump(WidgetTester tester, Widget screen, Size size) async {
   await tester.pumpWidget(
     ProviderScope(
       overrides: _overrides,
-      child: MaterialApp(home: screen),
+      // A real router (the drawer reads the current route): the screen
+      // under test at '/', plus the module's own routes so drawer taps
+      // navigate — same pattern as the Principal/Vice Principal tests.
+      child: MaterialApp.router(
+        routerConfig: GoRouter(
+          routes: [GoRoute(path: '/', builder: (_, _) => screen), ...StudentModule().routes()],
+        ),
+      ),
     ),
   );
   await tester.pumpAndSettle();

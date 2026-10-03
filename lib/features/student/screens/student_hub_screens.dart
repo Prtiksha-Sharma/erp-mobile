@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/auth/auth_provider.dart';
 import '../../../ui/theme/app_colors.dart';
 import '../../../ui/widgets/responsive.dart';
-import 'student_change_password_sheet.dart';
+import 'student_page_scaffold.dart';
 
 /// One destination on a hub screen — the mobile stand-in for the web's
 /// student sidebar entries (studentRoutes.jsx). The web shows every page
@@ -53,56 +51,23 @@ class StudentAcademicsHubScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      appBar: AppBar(title: const Text('Academics')),
+    return StudentPageScaffold(
+      title: 'Academics',
       body: ResponsiveListView(children: [_HubGrid(entries: _academicsEntries)]),
     );
   }
 }
 
-class StudentMoreHubScreen extends ConsumerWidget {
+/// Sign Out and Change Password now live in the shared drawer-shell's
+/// account menu (top bar), not here — see student_page_scaffold.dart.
+class StudentMoreHubScreen extends StatelessWidget {
   const StudentMoreHubScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final scheme = Theme.of(context).colorScheme;
-    return Scaffold(
-      backgroundColor: scheme.surfaceContainerLowest,
-      appBar: AppBar(title: const Text('More')),
-      body: ResponsiveListView(
-        children: [
-          _HubGrid(entries: _moreEntries),
-          const SizedBox(height: 20),
-          Text('Account', style: Theme.of(context).textTheme.titleSmall),
-          const SizedBox(height: 8),
-          Card(
-            elevation: 0,
-            margin: EdgeInsets.zero,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-              side: BorderSide(color: scheme.outlineVariant.withValues(alpha: 0.6)),
-            ),
-            clipBehavior: Clip.antiAlias,
-            child: Column(
-              children: [
-                ListTile(
-                  leading: const Icon(Icons.lock_outline),
-                  title: const Text('Change Password'),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () => showChangePasswordSheet(context),
-                ),
-                const Divider(height: 1),
-                ListTile(
-                  leading: Icon(Icons.logout, color: scheme.error),
-                  title: Text('Log out', style: TextStyle(color: scheme.error)),
-                  onTap: () => ref.read(authProvider.notifier).logout(),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+  Widget build(BuildContext context) {
+    return StudentPageScaffold(
+      title: 'More',
+      body: ResponsiveListView(children: [_HubGrid(entries: _moreEntries)]),
     );
   }
 }

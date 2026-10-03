@@ -73,18 +73,8 @@ class TeacherHomeScreen extends ConsumerWidget {
     const main = [_ClassesTodayCard(), SizedBox(height: 16), _RecentHomeworkCard()];
     const side = [_NoticesCard(), SizedBox(height: 16), _QuickActionsCard()];
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      appBar: AppBar(
-        title: const Text('Vidyaprabandhan'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Log out',
-            onPressed: () => ref.read(authProvider.notifier).logout(),
-          ),
-        ],
-      ),
+    return TeacherPageScaffold(
+      title: 'Dashboard',
       body: ResponsiveListView(
         onRefresh: () async {
           ref
