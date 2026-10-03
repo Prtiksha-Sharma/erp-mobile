@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/auth/auth_provider.dart';
 import '../../../core/error/failure.dart';
 import '../../../core/models/attendance_summary.dart';
 import '../../../core/models/child.dart';
 import '../../../core/models/homework_submission.dart';
 import '../../../core/storage/secure_storage.dart';
+import '../../../ui/widgets/account_menu_button.dart';
 import '../../../ui/widgets/error_view.dart';
 import '../providers/attendance_provider.dart';
 import '../providers/children_provider.dart';
@@ -65,13 +65,7 @@ class _ParentHomeScreenState extends ConsumerState<ParentHomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Vidyaprabandhan'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Log out',
-            onPressed: () => ref.read(authProvider.notifier).logout(),
-          ),
-        ],
+        actions: const [AccountMenuButton()],
       ),
       body: childrenAsync.when(
         data: (children) => _HomeBody(children: children, activeChild: activeChild),
