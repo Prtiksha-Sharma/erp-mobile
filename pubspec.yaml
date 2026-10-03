@@ -66,6 +66,8 @@ dev_dependencies:
   riverpod_generator: ^4.0.9
   freezed: ^4.0.2
   json_serializable: ^6.14.1
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.8
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -77,6 +79,11 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  # No `assets:` block: the logo is not drawn by Dart code anywhere. The
+  # launcher icon and splash are generated into native Android/iOS resources
+  # from assets/branding/ (see the two config blocks at the end of this file),
+  # so those source images are deliberately NOT bundled into the app.
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -108,3 +115,50 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+# Launcher icon generation. Regenerate after changing assets/branding/ with:
+#   dart run flutter_launcher_icons
+flutter_launcher_icons:
+  android: true
+  ios: true
+  # Flattened onto white: the logo is a frame with a transparent interior, and
+  # iOS rejects icons containing an alpha channel.
+  image_path: "assets/branding/icon_master.png"
+  remove_alpha_ios: true
+  background_color_ios: "#FFFFFF"
+  # Android 8+ adaptive icon. The foreground is padded into the 66% safe zone
+  # so the launcher's circle/squircle mask never clips the logo.
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/branding/icon_foreground.png"
+  min_sdk_android: 21
+
+# Splash screen generation. Regenerate after changing assets/branding/ with:
+#   dart run flutter_native_splash:create
+#
+# Colours are sampled from the logo itself: #2399E4 (blue) -> #35AF64 (green),
+# deepened for use as a backdrop. The logo is a frame with a TRANSPARENT
+# interior and a dark-navy wordmark, so it can never sit directly on the
+# gradient — it would be unreadable. Both splash images therefore carry their
+# own white backing (a rounded tile / a disc) behind the logo.
+#
+# No `color_dark`/`background_image_dark`: the gradient already has enough
+# contrast for the white tile in either system theme.
+flutter_native_splash:
+  # `color` and `background_image` are alternatives, not companions — setting
+  # both makes the generator emit a 1x1 solid colour and silently drop the
+  # gradient. Only `background_image` here; android_12 keeps its own `color`
+  # because that API cannot take an image at all.
+  background_image: "assets/branding/splash_bg.png"
+  image: "assets/branding/splash_tile.png"
+  android: true
+  ios: true
+  web: false
+  android_12:
+    # Android 12+ replaced the old splash with a system API that allows only a
+    # solid window colour plus a circularly-masked icon — no background image.
+    # The white disc is baked into the image rather than using
+    # `icon_background_color`, because that option's circle spans the whole
+    # canvas and leaves the logo at ~47% of it; a 768px disc inside the 1152px
+    # canvas lets the logo fill ~68% instead.
+    image: "assets/branding/splash_android12.png"
+    color: "#0A5EA8"

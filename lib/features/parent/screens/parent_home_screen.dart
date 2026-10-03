@@ -7,6 +7,7 @@ import '../../../core/models/attendance_summary.dart';
 import '../../../core/models/child.dart';
 import '../../../core/models/homework_submission.dart';
 import '../../../core/storage/secure_storage.dart';
+import '../../../ui/widgets/account_menu_button.dart';
 import '../../../ui/widgets/error_view.dart';
 import '../providers/attendance_provider.dart';
 import '../providers/children_provider.dart';
@@ -62,8 +63,11 @@ class _ParentHomeScreenState extends ConsumerState<ParentHomeScreen> {
       });
     });
 
-    return ParentPageScaffold(
-      title: 'Dashboard',
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Vidyaprabandhan'),
+        actions: const [AccountMenuButton()],
+      ),
       body: childrenAsync.when(
         data: (children) => _HomeBody(children: children, activeChild: activeChild),
         loading: () => const Center(child: CircularProgressIndicator()),
