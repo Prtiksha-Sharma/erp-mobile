@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../../core/auth/auth_provider.dart';
 import '../../../core/error/failure.dart';
 import '../../../core/error/result.dart';
 import '../../../core/models/driver_profile.dart';
+import '../../../ui/widgets/account_menu_button.dart';
 import '../../../ui/widgets/error_view.dart';
 import '../providers/driver_provider.dart';
 import '../services/driver_service.dart';
@@ -26,13 +26,7 @@ class DriverHomeScreen extends ConsumerWidget {
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
       appBar: AppBar(
         title: const Text('Driver'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Log out',
-            onPressed: () => ref.read(authProvider.notifier).logout(),
-          ),
-        ],
+        actions: const [AccountMenuButton()],
       ),
       body: profileAsync.when(
         data: (profile) => tripsAsync.when(
