@@ -1,4 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- debug/ and profile/ manifests declare INTERNET only for their own
+         builds; release needs it here or every API call fails. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- flutter_local_notifications: required on Android 13+ to show any
+         notification. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <application
         android:label="Vidyaprabandhan"
         android:name="${applicationName}"
