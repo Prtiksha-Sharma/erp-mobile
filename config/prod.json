@@ -1,5 +1,5 @@
 {
-  "API_BASE_URL": "https://edusoft-erp.web.app/api",
-  "SOCKET_URL": "https://edusoft-erp.web.app",
+  "API_BASE_URL": "https://asia-south1-edusoft-erp.cloudfunctions.net/api/api",
+  "SOCKET_URL": "https://asia-south1-edusoft-erp.cloudfunctions.net/api",
   "ENVIRONMENT": "prod"
 }
