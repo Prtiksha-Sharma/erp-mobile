@@ -11,6 +11,7 @@ class AppNavItem {
     required this.path,
     this.webPath,
     this.built = true,
+    this.children = const [],
   });
 
   final String label;
@@ -27,6 +28,12 @@ class AppNavItem {
   /// known gap, not a crash — the caller is expected to route it to an
   /// honest "not available yet" screen instead of a fake one.
   final bool built;
+
+  /// Sub-entries (the web sidebar's accordion `children`). When non-empty
+  /// the entry is an accordion header: tapping it expands/collapses the
+  /// children instead of navigating, since the drawer closes on navigation
+  /// and would hide the children being opened (see Proj.md section 5d).
+  final List<AppNavItem> children;
 }
 
 /// A group of [AppNavItem]s under an optional section header — the
@@ -44,10 +51,18 @@ class AppNavSection {
 /// has no entry pointing at it. Generic port of `principalPathForWebLink`.
 String? pathForWebLink(List<AppNavSection> sections, String? link) {
   if (link == null) return null;
-  for (final section in sections) {
-    for (final item in section.items) {
+  String? find(List<AppNavItem> items) {
+    for (final item in items) {
       if (item.webPath == link) return item.path;
+      final nested = find(item.children);
+      if (nested != null) return nested;
     }
+    return null;
+  }
+
+  for (final section in sections) {
+    final hit = find(section.items);
+    if (hit != null) return hit;
   }
   return null;
 }
