@@ -108,6 +108,23 @@ class AdminStudentsService {
   Future<Result<AdminStudentBulkResult>> bulkGenerateCertificates(List<String> ids, String type) =>
       _bulk('POST', 'certificates', {'student_ids': ids, 'type': type});
 
+  /// GET /admin/students/bulk/export — bulk.controller.js reads only the
+  /// query filters (`student_ids` is ignored server-side, and the web's GET
+  /// body never reaches it either), returning every matching row unpaged.
+  /// Callers narrow the rows to the selection themselves.
+  Future<Result<List<AdminStudentRow>>> exportStudents(StudentsQuery filters) => guard(() async {
+    final res = await _dio.get(
+      '$_base/bulk/export',
+      queryParameters: {
+        if (filters.search.isNotEmpty) 'search': filters.search,
+        if (filters.classId.isNotEmpty) 'class_id': filters.classId,
+        if (filters.status.isNotEmpty) 'status': filters.status,
+      },
+    );
+    final data = (res.data['data'] as Map<String, dynamic>?)?['data'] as List? ?? const [];
+    return data.map((e) => AdminStudentRow.fromJson(e as Map<String, dynamic>)).toList();
+  });
+
   // ── Profile edits ──────────────────────────────────────────────────────
 
   Future<Result<void>> updatePersonalInfo(String studentId, Map<String, dynamic> payload) =>
