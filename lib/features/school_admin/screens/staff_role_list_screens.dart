@@ -17,14 +17,17 @@ import '../../../ui/widgets/section_card.dart';
 import '../../../ui/widgets/status_badge.dart';
 import '../providers/school_admin_providers.dart';
 import '../services/staff_directory_service.dart';
+import 'school_admin_nav.dart';
+import 'principal_management_widgets.dart';
 import 'school_admin_page_scaffold.dart';
 import 'staff_account_actions.dart';
 import 'staff_form_sheets.dart';
 
 /// The role-filtered views of the one staff roster (GET /admin/staff?role=…):
-/// web TeachersListPage, LibrariansListPage, ReceptionistsListPage, their
-/// cards, and the Teacher/Librarian/Receptionist detail modals (one sheet
-/// here, [showStaffDetailSheet]).
+/// web TeachersListPage, LibrariansListPage, ReceptionistsListPage and
+/// PrincipalManagementPage, their cards, and the Teacher/Librarian/
+/// Receptionist/Principal detail modals (one sheet here,
+/// [showStaffDetailSheet]).
 
 // ── Teachers ─────────────────────────────────────────────────────────────
 
@@ -190,8 +193,8 @@ class _TeacherRow extends StatelessWidget {
 
 // ── Librarians / Receptionists ───────────────────────────────────────────
 
-/// LibrariansListPage / ReceptionistsListPage — identical pages for a
-/// different role. "Add …" deep-links into Employee Management's Add
+/// LibrariansListPage / ReceptionistsListPage (and PrincipalManagementPage,
+/// with extras) — identical pages for a different role. "Add …" deep-links into Employee Management's Add
 /// Staff with the role pre-ticked, exactly like the web's `?addRole=`.
 class RoleStaffListScreen extends ConsumerStatefulWidget {
   const RoleStaffListScreen.librarians({super.key})
@@ -206,6 +209,14 @@ class RoleStaffListScreen extends ConsumerStatefulWidget {
       icon = Icons.how_to_reg_outlined,
       kind = StaffDetailKind.receptionist;
 
+  /// PrincipalManagementPage — the same roster page plus stat tiles, a
+  /// Manage Permissions shortcut and the Recent Activity feed.
+  const RoleStaffListScreen.principals({super.key})
+    : role = 'Principal',
+      title = 'Principal Management',
+      icon = Icons.shield_outlined,
+      kind = StaffDetailKind.principal;
+
   final String role;
   final String title;
   final IconData icon;
@@ -219,6 +230,8 @@ class _RoleStaffListScreenState extends ConsumerState<RoleStaffListScreen> {
   final _search = TextEditingController();
   Timer? _debounce;
   late StaffQuery _query = StaffQuery(role: widget.role, limit: 12);
+
+  bool get _isPrincipal => widget.kind == StaffDetailKind.principal;
 
   @override
   void dispose() {
@@ -241,6 +254,11 @@ class _RoleStaffListScreenState extends ConsumerState<RoleStaffListScreen> {
     final branches = ref.watch(schoolBranchesProvider).value ?? const [];
     final schoolName = ref.watch(schoolLogoProvider)?.institutionName;
     final total = list.value?.total;
+    // Header stat tiles summarise the whole roster, independent of the
+    // list's own filters (no aggregate endpoint exists; the backend caps a
+    // page at 100, so Active / Branches are exact up to 100 principals).
+    final roster = _isPrincipal ? ref.watch(staffListProvider(StaffQuery(role: widget.role, limit: 100))) : null;
+    final stats = roster?.value == null ? null : PrincipalStats.of(roster!.value!);
     final filtered = _search.text.isNotEmpty || _query.employmentStatus.isNotEmpty || _query.branchId.isNotEmpty;
 
     final statusSelect = OptionSelect(
@@ -279,24 +297,26 @@ class _RoleStaffListScreenState extends ConsumerState<RoleStaffListScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(widget.icon, size: 14, color: Colors.white70),
-                        const SizedBox(width: 6),
-                        Text(
-                          schoolName != null ? '$schoolName · School Admin' : 'School Admin',
-                          style: const TextStyle(fontSize: 12, color: Colors.white70),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
+                    if (!_isPrincipal) ...[
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(widget.icon, size: 14, color: Colors.white70),
+                          const SizedBox(width: 6),
+                          Text(
+                            schoolName != null ? '$schoolName · School Admin' : 'School Admin',
+                            style: const TextStyle(fontSize: 12, color: Colors.white70),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                    ],
                     Text.rich(
                       TextSpan(
                         text: widget.title,
                         style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: Colors.white),
                         children: [
-                          if (total != null)
+                          if (total != null && !_isPrincipal)
                             TextSpan(
                               text: '  ($total)',
                               style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: Colors.white70),
@@ -304,18 +324,47 @@ class _RoleStaffListScreenState extends ConsumerState<RoleStaffListScreen> {
                         ],
                       ),
                     ),
+                    if (_isPrincipal)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 2),
+                        child: Text(
+                          stats == null
+                              ? 'Loading…'
+                              : '${stats.active} active principal${stats.active == 1 ? '' : 's'} across your school',
+                          style: const TextStyle(color: Colors.white70),
+                        ),
+                      ),
                   ],
                 ),
-                FilledButton.icon(
-                  style: FilledButton.styleFrom(backgroundColor: Colors.white, foregroundColor: AppColors.primary),
-                  onPressed: () =>
-                      context.go(Uri(path: '/school-admin/staff', queryParameters: {'addRole': role}).toString()),
-                  icon: const Icon(Icons.person_add_alt_1_outlined, size: 18),
-                  label: Text('Add $role'),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    if (_isPrincipal)
+                      OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          side: const BorderSide(color: Colors.white54),
+                        ),
+                        onPressed: () => context.go(
+                          Uri(path: SchoolAdminPaths.rolePermissions, queryParameters: {'role': role}).toString(),
+                        ),
+                        icon: const Icon(Icons.verified_user_outlined, size: 18),
+                        label: const Text('Manage Permissions'),
+                      ),
+                    FilledButton.icon(
+                      style: FilledButton.styleFrom(backgroundColor: Colors.white, foregroundColor: AppColors.primary),
+                      onPressed: () =>
+                          context.go(Uri(path: '/school-admin/staff', queryParameters: {'addRole': role}).toString()),
+                      icon: const Icon(Icons.person_add_alt_1_outlined, size: 18),
+                      label: Text('Add $role'),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
+          if (_isPrincipal) ...[const SizedBox(height: 16), PrincipalStatTiles(stats: stats)],
           const SizedBox(height: 16),
           SectionCard(
             child: LayoutBuilder(
@@ -392,6 +441,7 @@ class _RoleStaffListScreenState extends ConsumerState<RoleStaffListScreen> {
                     ],
                   ),
           ),
+          if (_isPrincipal) ...[const SizedBox(height: 16), const PrincipalActivityCard()],
         ],
       ),
     );
@@ -609,7 +659,8 @@ enum StaffDetailKind {
   /// Taught and Principal Remarks.
   staff('Staff Details', 'Loading teacher…'),
   librarian('Librarian Details', 'Loading librarian…'),
-  receptionist('Receptionist Details', 'Loading receptionist…');
+  receptionist('Receptionist Details', 'Loading receptionist…'),
+  principal('Principal Details', 'Loading principal…');
 
   const StaffDetailKind(this.title, this.loadingLabel);
 
@@ -735,7 +786,10 @@ class _StaffDetailContent extends ConsumerWidget {
                   ),
                   OutlinedButton.icon(
                     onPressed: () async {
-                      final deleted = await actions.confirmDelete(context, title: 'Delete Staff Account');
+                      final deleted = await actions.confirmDelete(
+                        context,
+                        title: kind == StaffDetailKind.principal ? 'Delete Principal Account' : 'Delete Staff Account',
+                      );
                       if (deleted && context.mounted) Navigator.of(context).pop();
                     },
                     icon: const Icon(Icons.delete_outline, size: 16),
@@ -853,6 +907,7 @@ class _StaffDetailContent extends ConsumerWidget {
         ] else ...[
           directReports,
           accountRow,
+          if (kind == StaffDetailKind.principal) const PrincipalPermissionsSummary(),
         ],
       ],
     );

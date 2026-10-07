@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import '../../../core/api/api_result_extensions.dart';
 import '../../../core/api/dio_client.dart';
 import '../../../core/error/result.dart';
+import '../../../core/models/admin_management.dart' show PrincipalActivityItem;
 import '../../../core/models/admin_staff.dart';
 import '../../../core/models/school_admin_settings.dart';
 
@@ -17,8 +18,12 @@ import '../../../core/models/school_admin_settings.dart';
 class StaffDirectoryService {
   Dio get _dio => DioClient.instance.dio;
 
-  Future<List<T>> _list<T>(String path, T Function(Map<String, dynamic>) fromJson) async {
-    final res = await _dio.get(path);
+  Future<List<T>> _list<T>(
+    String path,
+    T Function(Map<String, dynamic>) fromJson, {
+    Map<String, dynamic>? query,
+  }) async {
+    final res = await _dio.get(path, queryParameters: query);
     final data = res.data['data'] as List? ?? const [];
     return data.map((e) => fromJson(e as Map<String, dynamic>)).toList();
   }
@@ -165,6 +170,12 @@ class StaffDirectoryService {
 
   Future<Result<List<StaffPrincipalRemark>>> getPrincipalRemarks(String staffId) =>
       guard(() => _list('/admin/staff/$staffId/principal-remarks', StaffPrincipalRemark.fromJson));
+
+  /// GET /admin/principal-activity — the institution-wide feed of what any
+  /// Principal has done (School Admin only). Capped server-side at 50, not
+  /// paginated.
+  Future<Result<List<PrincipalActivityItem>>> getPrincipalActivity({int limit = 20}) =>
+      guard(() => _list('/admin/principal-activity', PrincipalActivityItem.fromJson, query: {'limit': limit}));
 
   // ── Lookups ────────────────────────────────────────────────────────────
 

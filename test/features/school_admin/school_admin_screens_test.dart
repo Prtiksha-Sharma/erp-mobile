@@ -10,6 +10,7 @@ import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:edusoft_mobile/core/models/admin_management.dart' show PrincipalActivityItem;
 import 'package:edusoft_mobile/core/models/admin_staff.dart';
 import 'package:edusoft_mobile/core/models/app_notification.dart';
 import 'package:edusoft_mobile/core/models/school_admin_settings.dart';
@@ -50,15 +51,15 @@ StaffMember _row(int i, {required String role, String status = 'ACTIVE', String 
     });
 
 StaffPage _page(String role) => StaffPage(
-      total: 23,
-      page: 1,
-      limit: 10,
-      data: [
-        _row(0, role: role),
-        _row(1, role: role, status: 'INACTIVE', account: 'SUSPENDED'),
-        _row(2, role: role, status: 'TERMINATED'),
-      ],
-    );
+  total: 23,
+  page: 1,
+  limit: 10,
+  data: [
+    _row(0, role: role),
+    _row(1, role: role, status: 'INACTIVE', account: 'SUSPENDED'),
+    _row(2, role: role, status: 'TERMINATED'),
+  ],
+);
 
 final _qualifications = [
   StaffQualification.fromJson({
@@ -113,7 +114,12 @@ final _salary = SalaryStructureAssignment.fromJson({
     'template_name': 'Teaching Staff',
     'components': [
       {'component_id': 'c1', 'component_name': 'Basic Salary', 'percentage_of_ctc': '50', 'computed_amount': 300000},
-      {'component_id': 'c2', 'component_name': 'House Rent Allowance', 'percentage_of_ctc': '20', 'computed_amount': 120000},
+      {
+        'component_id': 'c2',
+        'component_name': 'House Rent Allowance',
+        'percentage_of_ctc': '20',
+        'computed_amount': 120000,
+      },
     ],
   },
   'take_home_estimate': {
@@ -127,7 +133,16 @@ final _salary = SalaryStructureAssignment.fromJson({
 });
 
 final _roles = [
-  for (final r in ['Accountant', 'Class Teacher', 'Librarian', 'Parent', 'Principal', 'Receptionist', 'Student', 'Teacher'])
+  for (final r in [
+    'Accountant',
+    'Class Teacher',
+    'Librarian',
+    'Parent',
+    'Principal',
+    'Receptionist',
+    'Student',
+    'Teacher',
+  ])
     RoleRef(roleId: 'r-$r', roleName: r),
 ];
 
@@ -154,59 +169,85 @@ final _catalog = [
 ];
 
 List<Override> _overrides({SchoolSubscription? subscription, SalaryStructureAssignment? salary}) => [
-      staffListProvider.overrideWith((ref, q) async => _page(q.role.isEmpty ? 'Teacher' : q.role)),
-      staffSummaryProvider.overrideWith(
-        (ref) async => const StaffSummary(
-          total: 40,
-          unassigned: 1,
-          roles: [StaffRoleCount(roleName: 'Teacher', count: 28), StaffRoleCount(roleName: 'Librarian', count: 2)],
-        ),
-      ),
-      staffDetailProvider.overrideWith((ref, id) async => _detail),
-      staffDocumentsProvider.overrideWith((ref, id) async => _documents),
-      staffQualificationsProvider.overrideWith((ref, id) async => _qualifications),
-      staffExperienceProvider.overrideWith((ref, id) async => _experience),
-      staffSalaryStructureProvider.overrideWith((ref, id) async => salary),
-      staffPrincipalRemarksProvider.overrideWith(
-        (ref, id) async => [
-          StaffPrincipalRemark.fromJson({
-            'remark_id': 'r1',
-            'remark_text': 'Excellent board results this year; recommend for HOD.',
-            'remark_type': 'RECOMMENDED_ACTION',
-            'created_at': '2026-08-20T11:00:00.000Z',
-          }),
-        ],
-      ),
-      salaryTemplatesProvider.overrideWith((ref) async => [_salary.template]),
-      schoolBranchesProvider.overrideWith(
-        (ref) async => [const SchoolBranch(branchId: 'b1', branchName: 'Main Campus — North Wing')],
-      ),
-      reportingToOptionsProvider.overrideWith((ref) async => _page('Teacher').data),
-      adminRolesProvider.overrideWith((ref) async => _roles),
-      permissionCatalogProvider.overrideWith((ref) async => _catalog),
-      rolePermissionsProvider.overrideWith(
-        (ref, id) async => RolePermissionGrants(roleId: id, roleName: 'Teacher', permissionKeys: const ['students.view']),
-      ),
-      subscriptionProvider.overrideWith(
-        (ref) async =>
-            subscription ??
-            SchoolSubscription.fromJson({
-              'subscription_status': 'ACTIVE',
-              'subscription_start_date': '2026-04-01T00:00:00.000Z',
-              'subscription_end_date': '2027-03-31T00:00:00.000Z',
-              'subscription_plan': {
-                'plan_name': 'Growth Plan For Large Multi-Branch Schools',
-                'price': '4999',
-                'max_students': 1500,
-                'max_teachers': 120,
-                'max_storage_gb': 50,
-                'max_branches': 3,
-              },
-            }),
-      ),
-      shellNotificationsProvider(AppRole.schoolAdmin)
-          .overrideWith((ref) async => const NotificationInbox(notifications: [], unreadCount: 0)),
-    ];
+  staffListProvider.overrideWith((ref, q) async => _page(q.role.isEmpty ? 'Teacher' : q.role)),
+  principalActivityProvider.overrideWith(
+    (ref, limit) async => [
+      PrincipalActivityItem.fromJson({
+        'activity_type': 'RECOMMENDED_ACTION',
+        'target_type': 'STUDENT',
+        'target_id': 'st1',
+        'target_name': 'Aishwarya Lakshmi Venkataraman',
+        'remark_text': 'Recommend counselling support before the board examinations begin next month.',
+        'performed_by': 'principal.anita',
+        'timestamp': '2026-10-05T09:30:00.000Z',
+      }),
+      PrincipalActivityItem.fromJson({
+        'activity_type': 'EVENT_APPROVAL',
+        'target_type': 'EVENT',
+        'target_id': 'ev1',
+        'target_name': 'Annual Day',
+        'remark_text': 'Approved "Annual Day"',
+        'performed_by': 'principal.anita',
+        'timestamp': '2026-10-04T09:30:00.000Z',
+      }),
+      PrincipalActivityItem.fromJson({'activity_type': 'SOMETHING_NEW', 'remark_text': 'Unknown kind'}),
+    ],
+  ),
+  staffSummaryProvider.overrideWith(
+    (ref) async => const StaffSummary(
+      total: 40,
+      unassigned: 1,
+      roles: [
+        StaffRoleCount(roleName: 'Teacher', count: 28),
+        StaffRoleCount(roleName: 'Librarian', count: 2),
+      ],
+    ),
+  ),
+  staffDetailProvider.overrideWith((ref, id) async => _detail),
+  staffDocumentsProvider.overrideWith((ref, id) async => _documents),
+  staffQualificationsProvider.overrideWith((ref, id) async => _qualifications),
+  staffExperienceProvider.overrideWith((ref, id) async => _experience),
+  staffSalaryStructureProvider.overrideWith((ref, id) async => salary),
+  staffPrincipalRemarksProvider.overrideWith(
+    (ref, id) async => [
+      StaffPrincipalRemark.fromJson({
+        'remark_id': 'r1',
+        'remark_text': 'Excellent board results this year; recommend for HOD.',
+        'remark_type': 'RECOMMENDED_ACTION',
+        'created_at': '2026-08-20T11:00:00.000Z',
+      }),
+    ],
+  ),
+  salaryTemplatesProvider.overrideWith((ref) async => [_salary.template]),
+  schoolBranchesProvider.overrideWith(
+    (ref) async => [const SchoolBranch(branchId: 'b1', branchName: 'Main Campus — North Wing')],
+  ),
+  reportingToOptionsProvider.overrideWith((ref) async => _page('Teacher').data),
+  adminRolesProvider.overrideWith((ref) async => _roles),
+  permissionCatalogProvider.overrideWith((ref) async => _catalog),
+  rolePermissionsProvider.overrideWith(
+    (ref, id) async => RolePermissionGrants(roleId: id, roleName: 'Teacher', permissionKeys: const ['students.view']),
+  ),
+  subscriptionProvider.overrideWith(
+    (ref) async =>
+        subscription ??
+        SchoolSubscription.fromJson({
+          'subscription_status': 'ACTIVE',
+          'subscription_start_date': '2026-04-01T00:00:00.000Z',
+          'subscription_end_date': '2027-03-31T00:00:00.000Z',
+          'subscription_plan': {
+            'plan_name': 'Growth Plan For Large Multi-Branch Schools',
+            'price': '4999',
+            'max_students': 1500,
+            'max_teachers': 120,
+            'max_storage_gb': 50,
+            'max_branches': 3,
+          },
+        }),
+  ),
+  shellNotificationsProvider(AppRole.schoolAdmin)
+      .overrideWith((ref) async => const NotificationInbox(notifications: [], unreadCount: 0)),
+];
 
 final Map<String, Widget Function()> _screens = {
   'Employee Management': () => const StaffListScreen(),
@@ -214,6 +255,7 @@ final Map<String, Widget Function()> _screens = {
   'Teachers': () => const TeachersListScreen(),
   'Librarians': () => const RoleStaffListScreen.librarians(),
   'Receptionists': () => const RoleStaffListScreen.receptionists(),
+  'Principal Management': () => const RoleStaffListScreen.principals(),
   'Role Permissions (no role)': () => const RolePermissionsScreen(),
   'Role Permissions (?role=Teacher)': () => const RolePermissionsScreen(initialRoleName: 'Teacher'),
   'School Settings': () => const SchoolSettingsScreen(),
@@ -245,7 +287,10 @@ Future<void> _pump(
       // other portals' tests.
       child: MaterialApp.router(
         routerConfig: GoRouter(
-          routes: [GoRoute(path: '/', builder: (_, _) => screen), ...SchoolAdminModule().routes()],
+          routes: [
+            GoRoute(path: '/', builder: (_, _) => screen),
+            ...SchoolAdminModule().routes(),
+          ],
         ),
       ),
     ),
@@ -394,6 +439,42 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.text('Librarian Details'), findsOneWidget);
         expect(find.text('Principal Remarks'), findsNothing);
+        expect(tester.takeException(), isNull);
+      });
+
+      testWidgets('Principal Management: stats, activity feed and detail sheet', (tester) async {
+        await _pump(tester, const RoleStaffListScreen.principals(), size.value);
+        expect(find.text('Principal Management'), findsWidgets);
+        expect(find.text('Add Principal'), findsOneWidget);
+        expect(find.text('Manage Permissions'), findsOneWidget);
+        expect(find.text('Total principals'), findsOneWidget);
+        expect(find.text('Branches covered'), findsOneWidget);
+        expect(find.textContaining('across your school'), findsOneWidget);
+        await tester.scrollUntilVisible(find.text('Recent Activity'), 300, scrollable: find.byType(Scrollable).first);
+        expect(find.text('Recommended Action'), findsOneWidget);
+        expect(find.text('Event Approved'), findsOneWidget);
+        expect(find.text('Remark'), findsOneWidget); // unknown type reads as Remark
+        expect(find.textContaining('by principal.anita'), findsWidgets);
+        expect(tester.takeException(), isNull);
+      });
+
+      testWidgets('Principal Management: detail sheet shows the role permission summary', (tester) async {
+        await _pump(tester, const RoleStaffListScreen.principals(), size.value);
+        // The cards sit below the hero, stat tiles and filters.
+        for (var i = 0; i < 6 && find.text('View Details').evaluate().isEmpty; i++) {
+          await tester.drag(find.byType(Scrollable).first, const Offset(0, -300));
+          await tester.pump();
+        }
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('View Details').first);
+        await tester.pumpAndSettle();
+        expect(find.text('Principal Details'), findsOneWidget);
+        await tester.drag(find.byType(SingleChildScrollView).last, const Offset(0, -2000));
+        await tester.pumpAndSettle();
+        expect(find.text('Principal Role Permissions'), findsOneWidget);
+        expect(find.text('Dashboard'), findsWidgets); // also a drawer entry on wide screens
+        expect(find.text('Teacher/Staff Module'), findsOneWidget);
+        expect(find.text('Principal Remarks'), findsNothing); // Teacher sheet only
         expect(tester.takeException(), isNull);
       });
 

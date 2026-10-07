@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/auth/auth_provider.dart';
 import '../../../core/error/result.dart';
 import '../../../core/models/admin_lookups.dart';
+import '../../../core/models/admin_management.dart' show PrincipalActivityItem;
 import '../../../core/models/admin_staff.dart';
 import '../../../core/models/school_admin_settings.dart';
 import '../services/admin_lookups_service.dart';
@@ -56,6 +57,11 @@ final staffExperienceProvider = FutureProvider.family<List<StaffExperience>, Str
 
 final staffSalaryStructureProvider = FutureProvider.family<SalaryStructureAssignment?, String>(
   (ref, staffId) => _staff(ref, (s) => s.getSalaryStructure(staffId)),
+);
+
+/// usePrincipalActivity — keyed by the item cap (the web asks for 20).
+final principalActivityProvider = FutureProvider.family<List<PrincipalActivityItem>, int>(
+  (ref, limit) => _staff(ref, (s) => s.getPrincipalActivity(limit: limit)),
 );
 
 final staffPrincipalRemarksProvider = FutureProvider.family<List<StaffPrincipalRemark>, String>(
