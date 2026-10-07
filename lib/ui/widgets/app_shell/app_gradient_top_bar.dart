@@ -54,7 +54,7 @@ class AppGradientTopBar extends StatelessWidget implements PreferredSizeWidget {
         decoration: const BoxDecoration(gradient: AppColors.brandGradient),
       ),
       title: Text(title, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)),
-      bottom: bottom,
+      bottom: bottom == null ? null : _OnGradient(child: bottom!),
       actions: [
         ...actions,
         notificationBell,
@@ -76,6 +76,36 @@ class AppGradientTopBar extends StatelessWidget implements PreferredSizeWidget {
         accountMenu,
         SizedBox(width: context.isTabletWidth ? 16 : 8),
       ],
+    );
+  }
+}
+
+/// Re-themes a bar-bottom widget (a `TabBar`) for the dark gradient behind it:
+/// the default tab colours come from the light page theme, which leaves the
+/// tab labels dark-on-purple and hard to read. White labels, a softer white
+/// for the unselected tabs, and a white indicator.
+class _OnGradient extends StatelessWidget implements PreferredSizeWidget {
+  const _OnGradient({required this.child});
+
+  final PreferredSizeWidget child;
+
+  @override
+  Size get preferredSize => child.preferredSize;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Theme(
+      data: theme.copyWith(
+        tabBarTheme: theme.tabBarTheme.copyWith(
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.white.withValues(alpha: 0.72),
+          indicatorColor: Colors.white,
+          dividerColor: Colors.transparent,
+          overlayColor: WidgetStatePropertyAll(Colors.white.withValues(alpha: 0.12)),
+        ),
+      ),
+      child: child,
     );
   }
 }

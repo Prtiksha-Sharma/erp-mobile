@@ -1,7 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../core/api/api_result_extensions.dart';
 import '../../../core/api/dio_client.dart';
+import '../../../core/error/failure.dart';
 import '../../../core/error/result.dart';
 
 part 'auth_service.freezed.dart';
@@ -39,14 +41,35 @@ abstract class LoginResult with _$LoginResult {
   factory LoginResult.fromJson(Map<String, dynamic> json) => _$LoginResultFromJson(json);
 }
 
+/// Shown when /auth/login answers 401 (auth.service.js: "Invalid credentials").
+/// Deliberately doesn't say which of the two was wrong.
+const loginInvalidCredentialsMessage =
+    'Incorrect username or password. Please check your details and try again.';
+
+/// On the login call a 401 means wrong credentials, not an expired session,
+/// so it becomes a user-facing validation failure. Everything else (lockout
+/// 423, network, server errors) passes through unchanged.
+Result<T> mapLoginFailure<T>(Result<T> result) {
+  if (result case Err(failure: UnauthorizedFailure())) {
+    return const Err(Failure.validation(loginInvalidCredentialsMessage));
+  }
+  return result;
+}
+
 class AuthService {
-  Future<Result<LoginResult>> login(String username, String password) => guard(() async {
-        final res = await DioClient.instance.dio.post(
-          '/auth/login',
-          data: {'username': username, 'password': password},
-        );
-        return LoginResult.fromJson(res.data['data'] as Map<String, dynamic>);
-      });
+  Future<Result<LoginResult>> login(String username, String password) async {
+    final result = await guard(() async {
+      final res = await DioClient.instance.dio.post(
+        '/auth/login',
+        data: {'username': username, 'password': password},
+        // A 401 here is "wrong password", not an expired session: skip the
+        // global 401 logout, which would also wipe the error state.
+        options: Options(extra: {DioClient.skipSessionExpiry: true}),
+      );
+      return LoginResult.fromJson(res.data['data'] as Map<String, dynamic>);
+    });
+    return mapLoginFailure(result);
+  }
 
   Future<Result<void>> logout() => guard(() async {
         await DioClient.instance.dio.post('/auth/logout');

@@ -1,4 +1,5 @@
 import '../../features/driver/driver_module.dart';
+import '../../features/librarian/librarian_module.dart';
 import '../../features/parent/parent_module.dart';
 import '../../features/principal/principal_module.dart';
 import '../../features/school_admin/school_admin_module.dart';
@@ -21,4 +22,5 @@ final Map<AppRole, RoleModule> roleRegistry = <AppRole, RoleModule>{
   AppRole.principal: PrincipalModule(),
   AppRole.vicePrincipal: VicePrincipalModule(),
   AppRole.schoolAdmin: SchoolAdminModule(),
+  AppRole.librarian: LibrarianModule(),
 };
