@@ -2,7 +2,7 @@
 ///
 /// This enum is the whole extensibility mechanism, together with
 /// `RoleModule` and `roleRegistry` (see role_module.dart / role_registry.dart).
-/// Adding a role later (e.g. Accountant) means:
+/// Adding a role later (e.g. Librarian, Accountant) means:
 ///   1. Add a value here.
 ///   2. Create `lib/features/<role>/` with its own screens/providers/services.
 ///   3. Implement RoleModule for it and register it in role_registry.dart.
@@ -15,6 +15,7 @@ enum AppRole {
   principal,
   vicePrincipal,
   librarian;
+  schoolAdmin;
 
   /// Matches the RAW role_name strings the backend JWT actually carries —
   /// Title Case, verified directly against auth.service.js#getUserRoles
@@ -43,10 +44,12 @@ enum AppRole {
         return AppRole.principal;
       case 'Vice Principal':
         return AppRole.vicePrincipal;
+      case 'School Admin':
+        return AppRole.schoolAdmin;
       case 'Librarian':
         return AppRole.librarian;
       default:
-        // Not an error — e.g. School Admin, Accountant are real backend
+        // Not an error — e.g. Accountant, Librarian are real backend
         // roles with no mobile module yet. See RoleModule doc.
         return null;
     }
