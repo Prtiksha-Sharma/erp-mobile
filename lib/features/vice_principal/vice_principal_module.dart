@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/roles/app_role.dart';
 import '../../core/roles/role_module.dart';
+import '../hostel_oversight/hostel_oversight.dart';
 import 'screens/vice_principal_dashboard_screen.dart';
 import 'screens/vice_principal_page_scaffold.dart';
 import 'screens/vice_principal_profile_screen.dart';
@@ -20,8 +21,11 @@ import 'screens/vice_principal_sidebar.dart';
 /// a Vice Principal token. The ADMIN.* oversight pages VICE_PRINCIPAL_NAV
 /// also links to (Student/Teacher/Class Monitoring, Attendance, Leave
 /// Management, Discipline, Homework, Examination, Timetable, Events,
-/// Academic Reports, Announcements, Fees, Library, Transport, Hostel) are
-/// separate web features; they are in the sidebar but not ported yet.
+/// Academic Reports, Announcements, Fees, Library, Transport) are separate
+/// web features; they are in the sidebar but not ported yet.
+///
+/// Hostel is ported: the shared hostel_oversight pages, read-only — the
+/// backend allows Vice Principal every GET under /admin/hostel but no writes.
 class VicePrincipalModule implements RoleModule {
   @override
   AppRole get role => AppRole.vicePrincipal;
@@ -34,6 +38,14 @@ class VicePrincipalModule implements RoleModule {
     final routes = <RouteBase>[
       GoRoute(path: '/vice-principal/dashboard', builder: (context, state) => const VicePrincipalDashboardScreen()),
       GoRoute(path: '/vice-principal/profile', builder: (context, state) => const VicePrincipalProfileScreen()),
+      ...hostelOversightRoutes(
+        HostelOversightConfig(
+          basePath: '/vice-principal/hostel',
+          canManage: false,
+          frame: (context, {required title, required body, floatingActionButton}) =>
+              VicePrincipalPageScaffold(title: title, body: body),
+        ),
+      ),
     ];
     // Every other VICE_PRINCIPAL_NAV entry — and every accordion child path
     // (Leave Management / Hostel) — is routed so the sidebar matches the web

@@ -267,7 +267,7 @@ void main() {
   group('role mapping', () {
     test('the backend "Librarian" role maps to the librarian module', () {
       expect(AppRole.fromBackendName('Librarian'), AppRole.librarian);
-      expect(AppRole.fromBackendName('Accountant'), isNull);
+      expect(AppRole.fromBackendName('Receptionist'), isNull);
       expect(roleRegistry[AppRole.librarian], isA<LibrarianModule>());
       expect(roleRegistry[AppRole.librarian]!.homePath, '/librarian/home');
     });

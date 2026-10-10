@@ -362,7 +362,7 @@ void main() {
 
       testWidgets('Attendance: Leaves tab and calendar day selection', (tester) async {
         await _pump(tester, const StudentAttendanceScreen(), size.value);
-        await tester.tap(find.text('3').first);
+        await tester.tap(find.descendant(of: find.byType(GridView).last, matching: find.text('3')));
         await tester.pumpAndSettle();
         expect(find.textContaining('Checked in 8:20 AM'), findsOneWidget);
 
