@@ -115,6 +115,7 @@ const vicePrincipalNav = <VicePrincipalNavItem>[
       webPath: '/admin/transport'),
   VicePrincipalNavItem('Hostel', Icons.home_outlined, '/vice-principal/hostel', VicePrincipalNavGroup.support,
       webPath: '/admin/hostel',
+      built: true,
       children: [
         VicePrincipalNavChild('Dashboard', '/vice-principal/hostel', webPath: '/admin/hostel'),
         VicePrincipalNavChild('Hostels', '/vice-principal/hostel/hostels', webPath: '/admin/hostel/hostels'),

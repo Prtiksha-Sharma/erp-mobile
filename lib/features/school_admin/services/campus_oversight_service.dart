@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import '../../../core/api/api_result_extensions.dart';
 import '../../../core/api/dio_client.dart';
 import '../../../core/error/result.dart';
-import '../../../core/models/admin_campus_hostel.dart';
 import '../../../core/models/admin_campus_library.dart';
 import '../../../core/models/admin_campus_reception.dart';
 import '../../../core/models/admin_campus_transport.dart';
@@ -128,63 +127,4 @@ class AdminTransportService {
 
   Future<Result<void>> resolveSos(String sosId) =>
       guard(() async => _dio.patch('/admin/transport-live/sos/$sosId/resolve'));
-}
-
-/// Hostel oversight — web adminHostelService.js + adminHostelRoomService.js
-/// (admin/hostel/hostel.router.js). School Admin writes: hostels CRUD,
-/// status, warden assign/unassign.
-class AdminHostelService {
-  Future<Result<HostelDashboard>> dashboard() => guard(() => _one('/admin/hostel/dashboard', HostelDashboard.fromJson));
-
-  Future<Result<List<CampusHostel>>> hostels() => guard(() => _list('/admin/hostel/hostels', CampusHostel.fromJson));
-
-  Future<Result<CampusHostel>> createHostel(Map<String, dynamic> payload) => guard(() async {
-    final res = await _dio.post('/admin/hostel/hostels', data: payload);
-    return CampusHostel.fromJson(res.data['data'] as Map<String, dynamic>);
-  });
-
-  Future<Result<CampusHostel>> updateHostel(String hostelId, Map<String, dynamic> payload) => guard(() async {
-    final res = await _dio.patch('/admin/hostel/hostels/$hostelId', data: payload);
-    return CampusHostel.fromJson(res.data['data'] as Map<String, dynamic>);
-  });
-
-  Future<Result<void>> setHostelStatus(String hostelId, bool isActive) =>
-      guard(() async => _dio.patch('/admin/hostel/hostels/$hostelId/status', data: {'is_active': isActive}));
-
-  Future<Result<void>> assignWarden(String hostelId, String staffId) =>
-      guard(() async => _dio.patch('/admin/hostel/hostels/$hostelId/warden', data: {'staff_id': staffId}));
-
-  Future<Result<void>> unassignWarden(String hostelId) =>
-      guard(() async => _dio.delete('/admin/hostel/hostels/$hostelId/warden'));
-
-  /// `floor_number` omitted when blank.
-  Future<Result<List<HostelRoom>>> rooms({String floorNumber = ''}) => guard(
-    () => _list('/admin/hostel/rooms', HostelRoom.fromJson, {if (floorNumber.isNotEmpty) 'floor_number': floorNumber}),
-  );
-
-  Future<Result<List<HostelAllocation>>> students({String roomId = '', String status = ''}) => guard(
-    () => _list('/admin/hostel/students', HostelAllocation.fromJson, {
-      if (roomId.isNotEmpty) 'room_id': roomId,
-      if (status.isNotEmpty) 'status': status,
-    }),
-  );
-
-  Future<Result<List<HostelAllocation>>> studentHistory(String studentId) =>
-      guard(() => _list('/admin/hostel/students/$studentId/history', HostelAllocation.fromJson));
-
-  Future<Result<List<HostelWarden>>> wardens() => guard(() => _list('/admin/hostel/wardens', HostelWarden.fromJson));
-
-  Future<Result<HostelWarden>> warden(String staffId) =>
-      guard(() => _one('/admin/hostel/wardens/$staffId', HostelWarden.fromJson));
-
-  Future<Result<HostelOccupancyReport>> occupancy() =>
-      guard(() => _one('/admin/hostel/reports/occupancy', HostelOccupancyReport.fromJson));
-
-  /// Dates are `YYYY-MM-DD`, omitted when blank.
-  Future<Result<HostelAttendanceSummary>> attendanceSummary({String fromDate = '', String toDate = ''}) => guard(
-    () => _one('/admin/hostel/reports/attendance-summary', HostelAttendanceSummary.fromJson, {
-      if (fromDate.isNotEmpty) 'from_date': fromDate,
-      if (toDate.isNotEmpty) 'to_date': toDate,
-    }),
-  );
 }
